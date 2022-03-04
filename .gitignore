@@ -31,4 +31,5 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 /tests/results/
 *.tgz
 application/config/database.php
-
+assets/polizas/pdf/*.pdf
+assets/polizas/firma/*.png
