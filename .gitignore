@@ -34,3 +34,7 @@ application/config/database.php
 assets/polizas/pdf/*.pdf
 assets/polizas/firma/*.png
 
+!assets/polizas/pdf/.gitkeep
+!assets/polizas/firma/.gitkeep
+.htaccess
+application/config/config.php
