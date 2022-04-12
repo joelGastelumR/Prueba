@@ -570,7 +570,49 @@ $( "#dpvale_promociones" )
     str = (str == "undefined")?"":str;
    $("#lblFechaInicio").html("");
    if(str!=""){
-    $('#lblFechaInicio').append("Empiece a pagar a partir del "+str);
+     var _fecha_descripcion="";
+     let arr = str.split('-');
+     if(arr[1]=="01")
+     {
+       _fecha_descripcion=arr[2]+" de Enero";
+     }
+     else if (arr[1]=="02") {
+       _fecha_descripcion=arr[2]+" de Febrero";
+     }
+     else if (arr[1]=="03") {
+       _fecha_descripcion=arr[2]+" de Marzo";
+     }
+     else if (arr[1]=="04") {
+       _fecha_descripcion=arr[2]+" de Abril";
+     }
+     else if (arr[1]=="05") {
+       _fecha_descripcion=arr[2]+" de Mayo";
+     }
+     else if (arr[1]=="06") {
+       _fecha_descripcion=arr[2]+" de Junio";
+     }
+     else if (arr[1]=="07") {
+       _fecha_descripcion=arr[2]+" de Julio";
+     }
+     else if (arr[1]=="08") {
+       _fecha_descripcion=arr[2]+" de Agosto";
+     }
+     else if (arr[1]=="09") {
+       _fecha_descripcion=arr[2]+" de Septiembre";
+     }
+     else if (arr[1]=="10") {
+       _fecha_descripcion=arr[2]+" de Octubre";
+     }
+     else if (arr[1]=="11") {
+       _fecha_descripcion=arr[2]+" de Noviembre";
+     }
+     else if (arr[1]=="12") {
+       _fecha_descripcion=arr[2]+" de Diciembre";
+     }
+
+     //_fecha_descripcion="",
+    //$('#lblFechaInicio').append("Empiece a pagar a partir del "+str);
+    $('#lblFechaInicio').append("Empiece a pagar a partir del "+_fecha_descripcion);
    }
   })
   .change();
