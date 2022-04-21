@@ -13,7 +13,7 @@ class Cancelacion_model extends CI_Model {
     $this->db3 = $this->load->database("karum", true);
   }
   public function consulta($tarjeta, $fecha, $tipo, $tienda){
-    $tienda = "D393251";
+    $tienda = $this->config->item('karum_tienda');
     $xml = '
     <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://WS_KARUM">
     <soapenv:Header/>
