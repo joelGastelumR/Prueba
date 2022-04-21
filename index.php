@@ -53,7 +53,16 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+ $base_url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+ $base_url = "://".$_SERVER['HTTP_HOST'];
+if(strpos($base_url, "qa"))
+{
+	$env="development";
+}
+else {
+	$env="production";
+}
+	define('ENVIRONMENT', $env);
 
 /*
  *---------------------------------------------------------------

@@ -12,12 +12,25 @@ class Dpvalecom_controller extends MY_Controller {
     $this->hash = $this->security->get_csrf_hash();
     $this->load->model("Dpvalecom_model");
     $this->config->load_db_items();
+    if(ENVIRONMENT=="development")
+    {
+      $this->path_firmas = "/var/www/html/assets/polizas/firma/"; // RUTAS QAs
+      $this->path_pdf= "/var/www/html/assets/polizas/pdf/"; // RUTAS QAs
+      $this->plantilla_poliza = '/var/www/html/assets/templetes/dpvale_seguro_ecommerce.html'; // RUTAS QAs
+    }
+    else
+    {
+      $this->path_firmas = "/var/www/caja/assets/polizas/firma/"; // RUTAS PRD
+      $this->path_pdf= "/var/www/caja/assets/polizas/pdf/"; // RUTAS PRD
+      $this->plantilla_poliza = '/var/www/caja/assets/templetes/dpvale_seguro_ecommerce.html'; // RUTAS PRD
+    }
+    //die($this->plantilla_poliza);
      // $this->path_firmas = "/var/www/caja/assets/polizas/firma/"; // RUTAS PRD
      // $this->path_pdf= "/var/www/caja/assets/polizas/pdf/"; // RUTAS PRD
      // $this->plantilla_poliza = '/var/www/caja/assets/templetes/dpvale_seguro_ecommerce.html'; // RUTAS PRD
-    $this->path_firmas = "/var/www/html/assets/polizas/firma/"; // RUTAS QAs
-    $this->path_pdf= "/var/www/html/assets/polizas/pdf/"; // RUTAS QAs
-    $this->plantilla_poliza = '/var/www/html/assets/templetes/dpvale_seguro_ecommerce.html'; // RUTAS QAs
+    // $this->path_firmas = "/var/www/html/assets/polizas/firma/"; // RUTAS QAs
+    // $this->path_pdf= "/var/www/html/assets/polizas/pdf/"; // RUTAS QAs
+    // $this->plantilla_poliza = '/var/www/html/assets/templetes/dpvale_seguro_ecommerce.html'; // RUTAS QAs
     $this->sms_expira = 30;
     $this->load->library('user_agent');
     //date_default_timezone_set('America/Mazatlan');
