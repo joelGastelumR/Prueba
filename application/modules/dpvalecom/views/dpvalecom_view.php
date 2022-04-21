@@ -222,16 +222,17 @@
               <!-- Informacion de Promociones-->
               <div class="card separador2">
                 <div class="card-body">
-                  <label class='mensaje'>Seleccione quincenas a pagar</label>
+                  <label class='mensaje'>Quincenas a pagar</label>
                   <div class="input-group mb-2">
 
                     <div class="input-group-prepend">
                       <label class="input-group-text" for="inputGroupSelect01">Promociones</label>
                     </div>
                     <select class="custom-select" id="dpvale_promociones">
-                      <option selected>..::Seleccione::...</option>
+                      <option selected>..::Seleccione quincenas a pagar::...</option>
                     </select>
                   </div>
+                  <label class='mensaje' id="lblFechaInicio"></label>
                 </div>
               </div>
               <!-- FIN Informacion de Promociones-->
@@ -430,7 +431,7 @@
         <div class="container">
           <div class="row">
             <div class="col-auto">
-              <span class="text-muted">Pago dpvale-ecommerce, dportenis.mx &copy; 2020</span>
+              <span class="text-muted">Pago dpvale-ecommerce, dportenis.mx &copy; 2022</span>
             </div>
           </div>
       </div>
@@ -536,6 +537,11 @@ function cargadatos(){
   $('#lbl_canjeante').val(datos.Customer.nombre);
   $('#dpvale_promociones').empty();
 
+  $('#lblFechaInicio').html("");
+  //$('#lblFechaInicio').append("Empiece a pagar a partir del "+datos.Promotions[0].promo_date);
+//Seleccione quincenas a pagar
+ trHTML='<option value="" data-folio=""data-quincena=""data-fecha=""data-promo=""data-fecha_s2="">Seleccione quincenas a pagar</option>';
+
   $.each(datos.Promotions, function (i, item) {
     if(item.promo == 0){promo = 'NO'}else{promo = 'SI'}
     pagoquincenal = Number(<?=$monto?>) / Number(item.term) ;
@@ -551,6 +557,65 @@ function cargadatos(){
   $("#btn_pago").removeAttr('disabled',false);
   return true;
 }
+
+$( "#dpvale_promociones" )
+  .change(function () {
+    var str = "";
+    $( "#dpvale_promociones option:selected" ).each(function() {
+      str += ($( this ).data("quincena"))?$( this ).data("quincena"):"";
+    });
+    // $( "div" ).text( str );
+    console.log("STR",str);
+    console.log("TIPO",typeof str);
+    str = (str == "undefined")?"":str;
+   $("#lblFechaInicio").html("");
+   if(str!=""){
+     var _fecha_descripcion="";
+     let arr = str.split('-');
+     if(arr[1]=="01")
+     {
+       _fecha_descripcion=arr[2]+" de Enero";
+     }
+     else if (arr[1]=="02") {
+       _fecha_descripcion=arr[2]+" de Febrero";
+     }
+     else if (arr[1]=="03") {
+       _fecha_descripcion=arr[2]+" de Marzo";
+     }
+     else if (arr[1]=="04") {
+       _fecha_descripcion=arr[2]+" de Abril";
+     }
+     else if (arr[1]=="05") {
+       _fecha_descripcion=arr[2]+" de Mayo";
+     }
+     else if (arr[1]=="06") {
+       _fecha_descripcion=arr[2]+" de Junio";
+     }
+     else if (arr[1]=="07") {
+       _fecha_descripcion=arr[2]+" de Julio";
+     }
+     else if (arr[1]=="08") {
+       _fecha_descripcion=arr[2]+" de Agosto";
+     }
+     else if (arr[1]=="09") {
+       _fecha_descripcion=arr[2]+" de Septiembre";
+     }
+     else if (arr[1]=="10") {
+       _fecha_descripcion=arr[2]+" de Octubre";
+     }
+     else if (arr[1]=="11") {
+       _fecha_descripcion=arr[2]+" de Noviembre";
+     }
+     else if (arr[1]=="12") {
+       _fecha_descripcion=arr[2]+" de Diciembre";
+     }
+
+     //_fecha_descripcion="",
+    //$('#lblFechaInicio').append("Empiece a pagar a partir del "+str);
+    $('#lblFechaInicio').append("Empiece a pagar a partir del "+_fecha_descripcion);
+   }
+  })
+  .change();
 
 function validaToken(){
   $token = $("#dpvale_token").val();
@@ -624,7 +689,7 @@ const select = $("#dpvale_promociones option:selected");
             itoken         : ios
           },
           beforeSend: function() {
-               $.blockUI({ message: '<h2>Canjendo dpvale.. <small>por favor espere un momento</small></h2>',timeout: 60000,baseZ: 9000 });
+               $.blockUI({ message: '<h2>Canjeando dpvale.. <small>por favor espere un momento</small></h2>',timeout: 60000,baseZ: 9000 });
           },
           success:function(data) {
             // console.log(data);

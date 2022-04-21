@@ -12,12 +12,25 @@ class Dpvalecom_controller extends MY_Controller {
     $this->hash = $this->security->get_csrf_hash();
     $this->load->model("Dpvalecom_model");
     $this->config->load_db_items();
-     $this->path_firmas = "/var/www/caja/assets/polizas/firma/"; // RUTAS PRD
-     $this->path_pdf= "/var/www/caja/assets/polizas/pdf/"; // RUTAS PRD
-     $this->plantilla_poliza = '/var/www/caja/assets/templetes/dpvale_seguro_ecommerce.html'; // RUTAS PRD
-    //$this->path_firmas = "/var/www/html/assets/polizas/firma/"; // RUTAS QAs
-    //$this->path_pdf= "/var/www/html/assets/polizas/pdf/"; // RUTAS QAs
-    //$this->plantilla_poliza = '/var/www/html/assets/templetes/dpvale_seguro_ecommerce.html'; // RUTAS QAs
+    if(ENVIRONMENT=="development")
+    {
+      $this->path_firmas = "/var/www/html/assets/polizas/firma/"; // RUTAS QAs
+      $this->path_pdf= "/var/www/html/assets/polizas/pdf/"; // RUTAS QAs
+      $this->plantilla_poliza = '/var/www/html/assets/templetes/dpvale_seguro_ecommerce.html'; // RUTAS QAs
+    }
+    else
+    {
+      $this->path_firmas = "/var/www/caja/assets/polizas/firma/"; // RUTAS PRD
+      $this->path_pdf= "/var/www/caja/assets/polizas/pdf/"; // RUTAS PRD
+      $this->plantilla_poliza = '/var/www/caja/assets/templetes/dpvale_seguro_ecommerce.html'; // RUTAS PRD
+    }
+    //die($this->plantilla_poliza);
+     // $this->path_firmas = "/var/www/caja/assets/polizas/firma/"; // RUTAS PRD
+     // $this->path_pdf= "/var/www/caja/assets/polizas/pdf/"; // RUTAS PRD
+     // $this->plantilla_poliza = '/var/www/caja/assets/templetes/dpvale_seguro_ecommerce.html'; // RUTAS PRD
+    // $this->path_firmas = "/var/www/html/assets/polizas/firma/"; // RUTAS QAs
+    // $this->path_pdf= "/var/www/html/assets/polizas/pdf/"; // RUTAS QAs
+    // $this->plantilla_poliza = '/var/www/html/assets/templetes/dpvale_seguro_ecommerce.html'; // RUTAS QAs
     $this->sms_expira = 30;
     $this->load->library('user_agent');
     //date_default_timezone_set('America/Mazatlan');
@@ -557,10 +570,10 @@ class Dpvalecom_controller extends MY_Controller {
              $this->setSession('seguro_hasta', $seguro_hasta);
 
              $qns = ($this->input->get('period')>0)?$this->input->get('period'):"12";
-             $fp = ($this->input->get('promo')=='SI')?$this->input->get('firstDueDate'):date('Y-m-d');
+             $fp = ($this->input->get('promo')=='SI' || $this->input->get('promo')=='si')?$this->input->get('firstDueDate'):date('Y-m-d');
              //$pagosde = $this->session->userdata('couponAmount_'.$this->hash) / $qns;
-             $pagosde = $this->getSession('couponAmount') / $qns;
-
+             $pagosde = $this->getSession('purchaseAmount') / $qns;
+             $pagosde = $pagosde + $seguro_1er_monto;
              $response = ["status"=>'ok',
                           "message"=>'Venta Generada con exito',
                           "CA"=>$CA[0],
@@ -573,8 +586,8 @@ class Dpvalecom_controller extends MY_Controller {
 
           }else{
             $qns = ($this->input->get('period')>0)?$this->input->get('period'):"12";
-            $fp = ($this->input->get('promo')=='SI')?$this->input->get('firstDueDate'):date('Y-m-d');
-            $pagosde = $this->getSession('couponAmount') / $qns;
+            $fp = ($this->input->get('promo')=='SI' || $this->input->get('promo')=='si')?$this->input->get('firstDueDate'):date('Y-m-d');
+            $pagosde = $this->getSession('purchaseAmount') / $qns;
             $response = ["status"=>'ok',"message"=>'Venta Generada con exito','seguro'=>false,'CA'=>$CA[0],"quincenas" => $qns,"fechapago" => $fp,"pagosde" => $pagosde];
 
           }

@@ -3,14 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Dpvalecom_model extends CI_Model {
   public function __construct()
-	{
-		parent::__construct();
+  {
+    parent::__construct();
     $this->config->load_db_items();
     $this->load->library('webservices');
-    $this->url_ws_s2credit = "http://10.200.3.103:7082/pos/s2credit";//$this->config->item('WS_s2credit');
+    // $this->url_ws_s2credit = "http://10.200.3.103:7082/pos/s2credit";
+    $this->url_ws_s2credit = $this->config->item('WS_s2credit');
     // echo $this->url_ws_s2credit;
     //$this->db2 = $this->load->database('postgres',true);
     $this->db2 = $this->load->database('s2credit',true);
+    $this->db3 = $this->load->database('default',true);
     $this->numero_intentos=5;
     $this->numero_reenvios=5;
     $this->tiempo_espera_intentos=10; //son minutos
@@ -66,13 +68,22 @@ class Dpvalecom_model extends CI_Model {
     //$row = $this->db2->query("SELECT cell_phone FROM voucher WHERE status = '1' and customer_id = '$idCustomer' ")->result();
     /*BUSQUEDA POR FOLIO DEL VALE EN POSTGRESS*/
     //$row = $this->db2->query("SELECT cell_phone FROM voucher WHERE status = '1' and voucher_id = '$folio' ")->result();
+
+    $foundTel = false;
+    /*BUSQUEDA EN LA TABLA DE CONFIGURACIONES[PORTAL EMPRESARIAL]*/
+    $row = $this->db3->query("SELECT telefono as cell_phone FROM config_tel_vale WHERE vale ='$folio'")->result();
+    if($row){
+      $tel = $row[0]->cell_phone;
+      $foundTel=true;
+    }else{
     /*BUSQUEDA POR FOLIO DEL VALE EN S2CREDIT*/
     $row = $this->db2->query("SELECT customer_phone_number as cell_phone FROM s2credit_ecoupons WHERE reference_number_encode ='$folio' ")->result();
+    if($row){$tel = $row[0]->cell_phone;$foundTel=true;}
 
-     if($row){
-       $tel = $row[0]->cell_phone;
 
-     
+    }
+  if($foundTel){
+
        if(strlen($tel)>10){ $tel = substr($tel, -10); }
        if($tel == '' || strlen($tel) < 10 || $tel == 0){
           $data = ["status"=>false, "code" => "A06" ,"message"=>'Numero telefonico no encontrado'];
