@@ -93,13 +93,24 @@ class Dpvalecom_model extends CI_Model {
 
        $sms_tel = $tel;
        $sms_token = $this->getToken();
-       $sms_url = $this->config->item('sms_url');
+
+       //cambios sms
+       /*$sms_url = $this->config->item('sms_url');
        $sms_account = $this->config->item('sms_user');
-       $sms_password = $this->config->item('sms_pass');
-       $sms_mensaje = "DP-$sms_token es tu código de verificación de Dpvale";
+       $sms_password = $this->config->item('sms_pass');*/
+       if(ENVIRONMENT=="development"){
+        $sms_url = "http://10.200.3.102:7082/sms/api/EnviarSMS";
+       }else{
+        $sms_url = "http://10.200.3.103:7082/sms/api/EnviarSMS";
+       }
+
+       //cambios sms
+       //$sms_mensaje = "DP-$sms_token es tu código de verificación de Dpvale";
+       $sms_mensaje = "DP-$sms_token es tu codigo de verificacion de dpvale";
        $hide_tel = $this->hiddenString($tel,0,3);
 
-       $args = [
+       //cambios sms
+       /*$args = [
        "user"=>$sms_account,
        "password"=>$sms_password,
        "service"=>"1",
@@ -109,6 +120,10 @@ class Dpvalecom_model extends CI_Model {
                   'lada' => '1',
                   'combination' => null,
                 ],
+        ];*/
+        $args = [
+         "mensaje" => "$sms_mensaje",
+         "telefonos" => ["52$sms_tel"]
         ];
 
         $enEspera = $this->sms_esperando($tel, $folio);
@@ -131,12 +146,22 @@ class Dpvalecom_model extends CI_Model {
             $this->setTrackingWs($token, 'enviarSMS', $folio, $row, $data);
             return $data;
           }
-         if( isset( $raw['response']->Message[0]->error ) ){
+
+          //cambios sms
+         /*if( isset( $raw['response']->Message[0]->error ) ){
+           $data = ["status"=>false, "code" => "A05" , "message"=>'Fallo, Servicio de SMS,<br>Erro: No se pudo obtener la funcion para enviar<br>'.$raw['response']->Message[0]->error];
+           $this->setTrackingWs($token, 'enviarSMS', $folio, $row, $data);
+           return $data;
+         }*/
+         if( isset( $raw['response']->requestError ) ){
            $data = ["status"=>false, "code" => "A05" , "message"=>'Fallo, Servicio de SMS,<br>Erro: No se pudo obtener la funcion para enviar<br>'.$raw['response']->Message[0]->error];
            $this->setTrackingWs($token, 'enviarSMS', $folio, $row, $data);
            return $data;
          }
-         if( isset( $raw['response']->Message[0]->id )){
+
+         //cambios sms
+         //if( isset( $raw['response']->Message[0]->id )){
+         if( isset( $raw['response']->messages[0]->messageId )){
              /* SE GUARDA EN LA TABLA SMS DE ESPERA*/
              $arreglo = array(
                "origen"=>'Dpvale-EC',
@@ -173,13 +198,24 @@ class Dpvalecom_model extends CI_Model {
        }
        $sms_tel = $tel;
        $sms_token = $this->getToken();
-       $sms_url = $this->config->item('sms_url');
+
+       //cambios sms
+       /*$sms_url = $this->config->item('sms_url');
        $sms_account = $this->config->item('sms_user');
-       $sms_password = $this->config->item('sms_pass');
-       $sms_mensaje = "DP-$sms_token es tu código de verificación de Dpvale";
+       $sms_password = $this->config->item('sms_pass');*/
+       if(ENVIRONMENT=="development"){
+        $sms_url = "http://10.200.3.102:7082/sms/api/EnviarSMS";
+       }else{
+        $sms_url = "http://10.200.3.103:7082/sms/api/EnviarSMS";
+       }
+
+       //cambios sms
+       //$sms_mensaje = "DP-$sms_token es tu código de verificación de Dpvale";
+       $sms_mensaje = "DP-$sms_token es tu codigo de verificacion de dpvale";
        $hide_tel = $this->hiddenString($tel,0,3);
 
-        $args = [
+       //cambios sms
+        /*$args = [
         "user"=>$sms_account,
         "password"=>$sms_password,
         "service"=>"1",
@@ -189,7 +225,12 @@ class Dpvalecom_model extends CI_Model {
                    'lada' => '1',
                    'combination' => null,
                  ],
+         ];*/
+         $args = [
+          "mensaje" => "$sms_mensaje",
+          "telefonos" => ["52$sms_tel"]
          ];
+
         //Reenviando el mensaje
           $raw = $this->webservices->REST($args, $sms_url, 'POST');
           $response = $raw['response'];
@@ -202,10 +243,16 @@ class Dpvalecom_model extends CI_Model {
             $data = ["status"=>false, "code" => "A05" , "message"=>'Fallo, Servicio de SMS,<br>Erro: No se pudo obtener la funcion para enviar<br>el webservices no responde'];
             return $data;
           }
-         if( isset( $raw['response']->Message[0]->error ) ){
+          //cambios sms
+         /*if( isset( $raw['response']->Message[0]->error ) ){
            $data = ["status"=>false, "code" => "A02" , "message"=>"SMS error: ".$raw['response']->Message[0]->error, 'number'=>$hide_tel];
            return $data;
-         }else{
+         }*/
+         if( isset( $raw['response']->requestError ) ){
+           $data = ["status"=>false, "code" => "A02" , "message"=>"SMS error: ".$raw['response']->requestError->serviceException->text, 'number'=>$hide_tel];
+           return $data;
+         }
+         else{
             $row = $this->db->query("SELECT reenvios FROM sms WHERE status = '1' and folio = '$folio_vale'")->result();
             if($row){$num_reenvio=$row[0]->reenvios + 1;}else{$num_reenvio=1;}
 
