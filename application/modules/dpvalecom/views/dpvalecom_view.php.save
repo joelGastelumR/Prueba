@@ -61,45 +61,45 @@
         margin-top: -15px;
       }
       .thank-you-pop{
-      	width:100%;
-       	/*padding:20px;*/
-       	padding:5px;
-      	text-align:center;
+        width:100%;
+        /*padding:20px;*/
+        padding:5px;
+        text-align:center;
       }
       .thank-you-pop img{
-      	width:56px;
-      	height:auto;
-      	margin:0 auto;
-      	display:block;
-      	margin-bottom:25px;
+        width:56px;
+        height:auto;
+        margin:0 auto;
+        display:block;
+        margin-bottom:25px;
       }
 
       .thank-you-pop h1{
-      	font-size: 32px;
+        font-size: 32px;
           margin-bottom: 25px;
-      	color:#5C5C5C;
+        color:#5C5C5C;
       }
       .thank-you-pop p{
-      	font-size: 20px;
+        font-size: 20px;
         margin-bottom: 27px;
-       	color:#5C5C5C;
+        color:#5C5C5C;
       }
       .thank-you-pop h3.cupon-pop{
-      	font-size: 18px;
+        font-size: 18px;
           margin-bottom: 40px;
-      	color:#222;
-      	display:inline-block;
-      	text-align:center;
-      	padding:10px 20px;
-      	border:2px dashed #222;
-      	clear:both;
-      	font-weight:normal;
+        color:#222;
+        display:inline-block;
+        text-align:center;
+        padding:10px 20px;
+        border:2px dashed #222;
+        clear:both;
+        font-weight:normal;
       }
       .thank-you-pop h3.cupon-pop span{
-      	color:#03A9F4;
+        color:#03A9F4;
       }
       .thank-you-pop a{
-      	display: inline-block;
+        display: inline-block;
           margin: 0 auto;
           padding: 9px 20px;
           color: #fff;
@@ -109,8 +109,8 @@
           border-radius: 17px;
       }
       .thank-you-pop a i{
-      	margin-right:5px;
-      	color:#fff;
+        margin-right:5px;
+        color:#fff;
       }
       #modalPoliza .modal-header{
           border:0px;
@@ -141,7 +141,7 @@
       }
       .observaciones1{
         font-size: 11px;
-       	color:#5C5C5C;
+        color:#5C5C5C;
       }
       .observaciones2{
         font-size: 14px;
@@ -264,13 +264,13 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="modalSMSLabel">Verificación de Identidad</h5>
+              <h5 class="modal-title" id="modalSMSLabel">Verificaciï¿½n de Identidad</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <p>El código se ha enviado vía SMS, favor de introducir el código</p>
+              <p>El cï¿½digo se ha enviado vï¿½a SMS, favor de introducir el cï¿½digo</p>
               <p id="lbl_mensaje" class="form-text text-muted"></p>
               <div class="row">
                 <div class="col-8">
@@ -282,7 +282,7 @@
                   </div>
                 </div>
                 <div class="col-12">
-                    <button type="button" class="btn btn-outline-secondary invisible" onclick="reenviar()" id="btn_reenviar">Reenviar Código SMS </button>
+                    <button type="button" class="btn btn-outline-secondary invisible" onclick="reenviar()" id="btn_reenviar">Reenviar Cï¿½digo SMS </button>
                 </div>
               </div>
             </div>
@@ -323,9 +323,9 @@
                   <img src="<?=base_url('/assets/imgs/Green-Round-Tick.png')?>" alt="">
                   <h1 id="mensaje_titulo">dpvale canjeado</h1>
                   <p id="mensaje_gracias"></p>
-                  <h3 class="cupon-pop">Código autorización: <span id="lbl_ca"></span></h3>
+                  <h3 class="cupon-pop">Cï¿½digo autorizaciï¿½n: <span id="lbl_ca"></span></h3>
                   <br>
-                  <a id="link_descarga" class="invisible" style="margin-bottom:10px;" target="_blank" >Descargar Póliza de seguro</a><br>
+                  <a id="link_descarga" class="invisible" style="margin-bottom:10px;" target="_blank" >Descargar Pï¿½liza de seguro</a><br>
                   <button type="button" class="btn btn-success" data-dismiss="modal" id="btn_success"></button><br>
                   <button type="button" class="btn btn-info invisible" data-dismiss="modal" id="btn_success2">FINALIZAR COMPRA</button>
               </div>
@@ -393,7 +393,7 @@
          <div class="modal-dialog" role="document">
                <div class="modal-content">
                  <div class="modal-header" style="padding: 0.2rem 1rem;">
-                   <h5 class="modal-title"><h3><b>Póliza de seguro</b></h3></p></h5>
+                   <h5 class="modal-title"><h3><b>Pï¿½liza de seguro</b></h3></p></h5>
                  </div>
                  <div class="modal-body">
                    <div id="content" style="text-align: center;overflow: auto;height:170px;">
@@ -482,7 +482,7 @@ function buscaFolio(){
         $('#modalSMS').modal('show');
       },
       error: function(e){
-            mensaje('Error','Intente en un momento más.<br>' + e.responseText);
+            mensaje('Error','Intente en un momento mï¿½s.<br>' + e.responseText);
       },
       complete: function() {
           $(document).ajaxStop($.unblockUI);
@@ -494,7 +494,7 @@ function cargadatos(){
   const datos = window.preload;
   let html = '';
   let trHTML = '';
-  let encabezado = ["Id","Nombre","Dirección","Numero Ext","Numero Int","CP","Colonia","Ciudad","Estado","Sexo","Telefono","Nacimiento","Saldo Disp.","rfc","curp",];
+  let encabezado = ["Id","Nombre","Direcciï¿½n","Numero Ext","Numero Int","CP","Colonia","Ciudad","Estado","Sexo","Telefono","Nacimiento","Saldo Disp.","rfc","curp",];
   let num = 0;
   $.each(datos.Customer, function (i, item) {
       html += '<div class="row my-2 mx-auto"><div class="col-4 text-right border-right border-dark">'+encabezado[num] +'</div><div class="col-8 pl-2">'+item+'</div></div>';
@@ -523,8 +523,8 @@ function cargadatos(){
 
 function validaToken(){
   $token = $("#dpvale_token").val();
-  if($token== ''){mensaje('Error','Favor escribir el código de Verificación');return false;}
-  if($token.length != 7){mensaje('Error','El código de Verificación es de 7 Digitos, Favor Verifique');return false;}
+  if($token== ''){mensaje('Error','Favor escribir el cï¿½digo de Verificaciï¿½n');return false;}
+  if($token.length != 7){mensaje('Error','El cï¿½digo de Verificaciï¿½n es de 7 Digitos, Favor Verifique');return false;}
   let ios=$("#idtoken").val();
   $.ajax({
       url: "<?php echo base_url('dpvalecom/checkcode'); ?>",
@@ -540,12 +540,12 @@ function validaToken(){
           mensaje('Error',data.message);
                   if(!data.action){
                     $("#insert_code").addClass('invisible');
-                    $("#lbl_mensaje").html('Supero los intentos de verificación de codigo');
+                    $("#lbl_mensaje").html('Supero los intentos de verificaciï¿½n de codigo');
                     $("#btn_verificacion").addClass('invisible');
                     return false;}
                     if(data.reenvio){
                       $("#btn_reenviar").removeClass('invisible');
-                      $("#lbl_mensaje").html('Favor de enviar un nuevo codigo de verificación a su telefono');
+                      $("#lbl_mensaje").html('Favor de enviar un nuevo codigo de verificaciï¿½n a su telefono');
                       return false;
                     }
         return false;
@@ -555,12 +555,12 @@ function validaToken(){
           $("#dpvale_token").val('');
           cargadatos();
         }else{
-          mensaje('Error','No se pudo validar el código de verificación, intente en un momento más.');
+          mensaje('Error','No se pudo validar el cï¿½digo de verificaciï¿½n, intente en un momento mï¿½s.');
         }
 
       },
       error: function(e){
-            mensaje('Error','Intente en un momento más.<br>' + e.responseText);
+            mensaje('Error','Intente en un momento mï¿½s.<br>' + e.responseText);
       },
       complete: function() {
           $(document).ajaxStop($.unblockUI);
@@ -571,7 +571,7 @@ function validaToken(){
 function setPago(){
 const select = $("#dpvale_promociones option:selected");
   if(select.folio == ''){
-    mensaje('Error','Por favor, seleccione promoción');
+    mensaje('Error','Por favor, seleccione promociï¿½n');
     return false;
   }
 
@@ -596,7 +596,7 @@ const select = $("#dpvale_promociones option:selected");
             itoken        : ios
           },
           beforeSend: function() {
-               $.blockUI({ message: '<h2>Canjendo dpvale.. <small>por favor espere un momento</small></h2>',timeout: 60000,baseZ: 9000 });
+               $.blockUI({ message: '<h2>Canjaendo dpvale.. <small>por favor espere un momento</small></h2>',timeout: 60000,baseZ: 9000 });
           },
           success:function(data) {
             console.log(data);
@@ -605,7 +605,7 @@ const select = $("#dpvale_promociones option:selected");
               window.canje=data;
               if(data.seguro){
                 msn_btn="FIRMAR POLIZA";
-                msn_txt="Gracias por su compra, para su mayor protección tenemos una póliza de vida incluida en esta compra, para hacerla válida se requiere que nos proporcione los datos del beneficiario y su firma.";
+                msn_txt="Gracias por su compra, para su mayor protecciï¿½n tenemos una pï¿½liza de vida incluida en esta compra, para hacerla vï¿½lida se requiere que nos proporcione los datos del beneficiario y su firma.";
               }else{
                 msn_btn="ACEPTAR";
                 msn_txt="Gracias por su compra, los tickets y recibos se compra se le enviaran via correo electronico";
@@ -618,7 +618,7 @@ const select = $("#dpvale_promociones option:selected");
             }
           },
           error: function(e){
-            mensaje('Error','No se pudo completar el canje, intente en un momento más.');
+            mensaje('Error','No se pudo completar el canje, intente en un momento mï¿½s.');
           },
           complete: function() {
               $(document).ajaxStop($.unblockUI);
@@ -657,7 +657,7 @@ function cargaParentescos(){
           $('#parentesco').empty('').append('<option>Cargando...</option>');
       },
       success:function(data) {
-            $('#parentesco').empty('').append('<option value="">Seleccioné</option>');
+            $('#parentesco').empty('').append('<option value="">Seleccionï¿½</option>');
              var trHTML = '';
              $.each(data.data, function (i, item) {
                   trHTML += '<option value="'+item.id+'">'+item.value+'</option>';
@@ -674,7 +674,7 @@ function cargaParentescos(){
 }
 
 function manualParentescos(){
-  var cadena = '[{"id":"","value":"Seleccioné"},{"id":"2","value":"Padre"},{"id":"3","value":"Madre"},{"id":"4","value":"Hijo (a)"},{"id":"5","value":"Hermano (a)"},{"id":"6","value":"T\u00edo (a)"},{"id":"7","value":"Sobrino (a)"},{"id":"8","value":"Abuelo (a)"},{"id":"10","value":"Esposo (a)"},{"id":"15","value":"Concubino (a)"},{"id":"16","value":"Nieto (a)"},{"id":"17","value":"Amigo (a)"}]';
+  var cadena = '[{"id":"","value":"Seleccionï¿½"},{"id":"2","value":"Padre"},{"id":"3","value":"Madre"},{"id":"4","value":"Hijo (a)"},{"id":"5","value":"Hermano (a)"},{"id":"6","value":"T\u00edo (a)"},{"id":"7","value":"Sobrino (a)"},{"id":"8","value":"Abuelo (a)"},{"id":"10","value":"Esposo (a)"},{"id":"15","value":"Concubino (a)"},{"id":"16","value":"Nieto (a)"},{"id":"17","value":"Amigo (a)"}]';
   var data = JSON.parse(cadena);
   $('#parentesco').empty('');
    var trHTML = '';
@@ -719,7 +719,7 @@ function guardar_beneficiario()
           dataType: "json",
           data:{valores : values, token: "<?php echo $hash; ?>",itoken: ios},
           beforeSend: function() {
-               $.blockUI({ message: '<h2>Generando Póliza..</h2>',timeout: 60000,baseZ: 9000 });
+               $.blockUI({ message: '<h2>Generando Pï¿½liza..</h2>',timeout: 60000,baseZ: 9000 });
           },
           success:function(data) {
             console.log(data);
@@ -736,7 +736,7 @@ function guardar_beneficiario()
             }
          },
          error: function(e){
-           mensaje('Error','No se pudo guardar el beneficiario, intente en un momento más.');
+           mensaje('Error','No se pudo guardar el beneficiario, intente en un momento mï¿½s.');
         },
          complete: function() {
              $(document).ajaxStop($.unblockUI);
@@ -751,7 +751,7 @@ function reset() {
 }
 
 function generar_poliza(){
-  if( signaturePad.isEmpty() ){mensaje('Error','Favor de Firmar la póliza');return false;}
+  if( signaturePad.isEmpty() ){mensaje('Error','Favor de Firmar la pï¿½liza');return false;}
   let data = signaturePad.toDataURL("image/png");
   let imagen64 = data.replace('data:image/png;base64,', '');
   let ios=$("#idtoken").val();
@@ -761,15 +761,15 @@ function generar_poliza(){
       dataType: "json",
       data:{ imgdata : imagen64 , token: "<?php echo $hash; ?>",itoken:ios },
       beforeSend: function() {
-           $.blockUI({ message: '<h2>Guardando Póliza..</h2>',timeout: 60000,baseZ: 9000 });
+           $.blockUI({ message: '<h2>Guardando Pï¿½liza..</h2>',timeout: 60000,baseZ: 9000 });
       },
       success:function(data) {
         console.log(data);
         window.seguro = data;
         if(data.status == 'error'){mensaje('Error',data.message);return false;}
         if(data.status == 'ok'){
-          $("#mensaje_titulo").html('dpvale Canjeado y Póliza Firmada');
-          $("#mensaje_gracias").html('Gracias por su compra, los tickets serán enviados vía correo electrónico.');
+          $("#mensaje_titulo").html('dpvale Canjeado y Pï¿½liza Firmada');
+          $("#mensaje_gracias").html('Gracias por su compra, los tickets serï¿½n enviados vï¿½a correo electrï¿½nico.');
           $("#btn_success2").removeClass('invisible');
           $("#btn_success").addClass('invisible');
           $("#myModal-poliza").modal('hide');
@@ -778,7 +778,7 @@ function generar_poliza(){
         }
      },
      error: function(e){
-       mensaje('Error','Se tuvo problemas para generar la póliza, intente en un momento más.');
+       mensaje('Error','Se tuvo problemas para generar la pï¿½liza, intente en un momento mï¿½s.');
     },
      complete: function() {
          $(document).ajaxStop($.unblockUI);
@@ -787,9 +787,9 @@ function generar_poliza(){
 }
 
 var decodeHTML = function (html) {
-	var txt = document.createElement('textarea');
-	txt.innerHTML = html;
-	return txt.value;
+  var txt = document.createElement('textarea');
+  txt.innerHTML = html;
+  return txt.value;
 };
 
 function reenviar(){
@@ -803,7 +803,7 @@ function reenviar(){
       dataType: "json",
       data:{ folio : $folio ,token: "<?php echo $hash; ?>", itoken:ios },
       beforeSend: function() {
-         $.blockUI({ message: '<h2>Reenviando Código..</h2>',timeout: 60000,baseZ: 9000 });
+         $.blockUI({ message: '<h2>Reenviando Cï¿½digo..</h2>',timeout: 60000,baseZ: 9000 });
       },
       success:function(data) {
         console.log(data);
