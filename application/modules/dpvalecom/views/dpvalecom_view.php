@@ -326,12 +326,19 @@
             <div class="modal-body">
               <div class="thank-you-pop">
                   <img src="<?=base_url('/assets/imgs/Green-Round-Tick.png')?>" alt="">
-                  <h1 id="mensaje_titulo">dpvale canjeado</h1>
-                  <p id="mensaje_gracias"></p>
-                  <h3 class="cupon-pop">Código autorización: <span id="lbl_ca"></span></h3>
-                  <br>
-                  <a id="link_descarga" class="invisible" style="margin-bottom:10px;" target="_blank" >Descargar Póliza de seguro</a><br>
+                  <!-- <h1 id="mensaje_titulo">dpvale canjeado</h1> -->
+                  <h1 id="mensaje_titulo">Confirmando su compra</h1>
+                  <!-- <p id="mensaje_finalizar"></p> -->
+                  <p id="mensaje_finalizar"><strong>Para finalizar su compra, de clic en el siguiente botón: </strong></p>
                   <button type="button" class="btn btn-success" data-dismiss="modal" id="btn_success"></button><br>
+
+                  <!-- <button type="button" class="btn btn-success invisible" data-dismiss="modal" id="btn_success2">FINALIZAR COMPRA</button><br><br> -->
+                  <!-- <p id="mensaje_gracias"></p> -->
+                  <p id="mensaje_gracias">Gracias por su compra, los recibos de compra serán enviados vía correo electrónico.</p>
+                  <h3 class="cupon-pop">Código autorización: <span id="lbl_ca"></span></h3>
+                  <!-- <br> -->
+                  <a id="link_descarga" class="invisible" style="margin-bottom:10px;" target="_blank" >Descargar Póliza de seguro</a><br>
+                  <!-- <button type="button" class="btn btn-success" data-dismiss="modal" id="btn_success"></button><br> -->
                   <button type="button" class="btn btn-info invisible" data-dismiss="modal" id="btn_success2">FINALIZAR COMPRA</button>
               </div>
             </div>
@@ -449,6 +456,7 @@
 </html>
 <script>
 //alert("entro en 5.18");
+
 //console.log("Navegador: "+bowser.name +" Version: "+ bowser.version);
 $.blockUI.defaults.css = {};
 $(function() {
@@ -477,7 +485,7 @@ $("#modalPoliza").on("shown.bs.modal", function() {
     }else{
       enviarMensaje(1);
     }
-  }, 10000);
+  }, 30000);
 
 });
 
@@ -864,13 +872,14 @@ function setventa(){
            $.blockUI({ message: '<h2>Guardando Póliza..</h2>',timeout: 60000,baseZ: 9000 });
       },
       success:function(data) {
-      //  console.log(data);
+       console.log(data);
         window.seguro = data;
         if(data.status == 'error'){mensaje('Error',data.message);return false;}
         if(data.status == 'ok'){
           // setPago();
-          $("#mensaje_titulo").html('dpvale canjeado y póliza firmada');
+          $("#mensaje_titulo").html('Confirmando su compra');
           $("#mensaje_gracias").html('Gracias por su compra, los recibos de compra serán enviados vía correo electrónico.');
+          $("#mensaje_finalizar").html('<strong>Para finalizar su compra, de clic en el siguiente botón: </strong>');
           $("#btn_success2").removeClass('invisible');
           $("#btn_success").addClass('invisible');
           $("#myModal-poliza").modal('hide');
