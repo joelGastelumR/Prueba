@@ -331,7 +331,7 @@
                   <!-- <p id="mensaje_finalizar"></p> -->
                   <p id="mensaje_finalizar"><strong>Para finalizar su compra, de clic en el siguiente botón: </strong></p>
                   <button type="button" class="btn btn-success" data-dismiss="modal" id="btn_success"></button><br>
-
+                  <button type="button" class="btn btn-success invisible" data-dismiss="modal" id="btn_success2">FINALIZAR COMPRA</button>
                   <!-- <button type="button" class="btn btn-success invisible" data-dismiss="modal" id="btn_success2">FINALIZAR COMPRA</button><br><br> -->
                   <!-- <p id="mensaje_gracias"></p> -->
                   <p id="mensaje_gracias">Gracias por su compra, los recibos de compra serán enviados vía correo electrónico.</p>
@@ -339,7 +339,7 @@
                   <!-- <br> -->
                   <a id="link_descarga" class="invisible" style="margin-bottom:10px;" target="_blank" >Descargar Póliza de seguro</a><br>
                   <!-- <button type="button" class="btn btn-success" data-dismiss="modal" id="btn_success"></button><br> -->
-                  <button type="button" class="btn btn-info invisible" data-dismiss="modal" id="btn_success2">FINALIZAR COMPRA</button>
+                  <!-- <button type="button" class="btn btn-info invisible" data-dismiss="modal" id="btn_success2">FINALIZAR COMPRA</button> -->
               </div>
             </div>
           </div>
