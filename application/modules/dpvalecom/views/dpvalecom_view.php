@@ -160,6 +160,10 @@
           padding-bottom: 0.85rem;
           padding-left: 0.55rem;
       }
+      .subir {
+          margin-top: -50px !important;
+          margin-bottom: 30px !important;
+      }
     </style>
     <title>DPVALE ECOMMERCES</title>
   </head>
@@ -330,7 +334,7 @@
                   <h1 id="mensaje_titulo">Confirmando su compra</h1>
                   <!-- <p id="mensaje_finalizar"></p> -->
                   <p id="mensaje_finalizar"><strong>Para finalizar su compra, de clic en el siguiente botón: </strong></p>
-                  <button type="button" class="btn btn-success" data-dismiss="modal" id="btn_success" style="display: block; margin: 0 auto;"></button>
+                  <button type="button" class="btn btn-success" data-dismiss="modal" id="btn_success" style="display: block; margin: 0 auto;">FINALIZAR COMPRA</button>
                   <button type="button" class="btn btn-success invisible" data-dismiss="modal" id="btn_success2" style="display: block; margin: 0 auto;">FINALIZAR COMPRA</button>
 
                   <!-- <br> -->
@@ -458,7 +462,7 @@
 </html>
 <script>
 //alert("entro en 5.18");
-
+  // $("#modalPoliza").modal('show');
 //console.log("Navegador: "+bowser.name +" Version: "+ bowser.version);
 $.blockUI.defaults.css = {};
 $(function() {
@@ -883,6 +887,7 @@ function setventa(){
           $("#mensaje_gracias").html('Gracias por su compra, los recibos de compra serán enviados vía correo electrónico.');
           $("#mensaje_finalizar").html('<strong>Para finalizar su compra, de clic en el siguiente botón: </strong>');
           $("#btn_success2").removeClass('invisible');
+          $("#btn_success2").addClass('subir');
           $("#btn_success").addClass('invisible');
           $("#myModal-poliza").modal('hide');
           $("#link_descarga").removeClass('invisible').attr('href',data.poliza);
