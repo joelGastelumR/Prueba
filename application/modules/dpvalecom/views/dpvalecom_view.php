@@ -164,10 +164,17 @@
           margin-top: -50px !important;
           margin-bottom: 30px !important;
       }
+      .content-cajaP {
+          overflow-y: auto;
+      }
+      div#myModal-poliza {
+          overflow-y: auto;
+      }
     </style>
     <title>DPVALE ECOMMERCES</title>
   </head>
   <body>
+    <div class="content-cajaP">
       <div class="container-fluid">
           <div class="col-md-auto">
              <!--ENCABEZADO-->
@@ -263,10 +270,12 @@
 
               <!-- FIN OPERACION -->
           </div>
-      </div>
+
       <br>
       <input type="hidden" value="<?php echo $hash; ?>" name="idtoken" id="idtoken">
       <?php echo "<small>Orden: $ordenid </small>" ?>
+      <br><br>
+      </div>
       <!-- Modal SMS-->
       <div class="modal fade" id="modalSMS" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalSMSLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -443,8 +452,8 @@
       <footer class="footer fixed-bottom" style="height: 25px !important">
         <div class="container">
           <div class="row">
-            <div class="col-auto">
-              <span class="text-muted">Pago dpvale-ecommerce, dportenis.mx &copy; 2022</span>
+            <div class="col-auto" style="margin: 0 auto;">
+              <span class="text-muted">Pago dpvale-ecommerce &copy; 2022</span>
             </div>
           </div>
       </div>
@@ -462,7 +471,7 @@
 </html>
 <script>
 //alert("entro en 5.18");
-  // $("#modalPoliza").modal('show');
+  // $("#myModal-poliza").modal('show');
 //console.log("Navegador: "+bowser.name +" Version: "+ bowser.version);
 $.blockUI.defaults.css = {};
 $(function() {
