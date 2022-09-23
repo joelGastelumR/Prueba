@@ -16,6 +16,8 @@ class Webservices {
        $json = json_encode($cadena);
      }
 
+     echo $json;
+     die();
      $ch = curl_init();
      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
      curl_setopt($ch, CURLOPT_URL, $url);
