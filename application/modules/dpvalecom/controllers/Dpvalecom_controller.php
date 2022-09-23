@@ -143,8 +143,6 @@ class Dpvalecom_controller extends MY_Controller {
              die(json_encode($response));
            }
 
-           print_r($datos);
-           die();
            $status_code   = $datos->coupon->status;
            $id_coupon     = $datos->coupon->id;
            $status_mensaje=$this->statusVale($datos->coupon->status);
