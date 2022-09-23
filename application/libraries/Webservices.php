@@ -17,7 +17,7 @@ class Webservices {
      }
      echo "JSON: ";
      echo $json;
-     echo "URL: ".$url
+     echo "URL: ".$url;
      die();
      $ch = curl_init();
      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
