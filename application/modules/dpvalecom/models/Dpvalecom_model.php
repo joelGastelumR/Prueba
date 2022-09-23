@@ -34,6 +34,8 @@ class Dpvalecom_model extends CI_Model {
 
   public function getVale($folio, $token){
         $json = array("coupon-search"=>array("coupon"=>$folio));
+        echo $json. " -- ".$this->url_ws_s2credit;
+        die();
         $data = $this->webservices->REST($json, $this->url_ws_s2credit, 'POST');
         $this->setTrackingWs($token, 'getVale', $folio, $json, $data);
     return $data;
