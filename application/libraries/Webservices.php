@@ -15,7 +15,7 @@ class Webservices {
      }else{
        $json = json_encode($cadena);
      }
-
+     echo "prueba -- ";
      echo $json;
      die();
      $ch = curl_init();
