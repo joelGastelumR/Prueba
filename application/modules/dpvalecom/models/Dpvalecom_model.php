@@ -100,8 +100,8 @@ class Dpvalecom_model extends CI_Model {
        $sms_password = $this->config->item('sms_pass');*/
        if(ENVIRONMENT=="development"){
          //NEW BUS
-        $sms_url = "http://10.200.5.89:7085/sms/api/EnviarSMS";
-        // $sms_url = "http://aceqa.grupodp.com.mx:7085/sms/api/EnviarSMS";
+        // $sms_url = "http://10.200.5.89:7085/sms/api/EnviarSMS";
+        $sms_url = "http://aceqa.grupodp.com.mx:7085/sms/api/EnviarSMS";
         //OLD BUS
         // $sms_url = "http://10.200.3.102:7082/sms/api/EnviarSMS";
        }else{
@@ -209,8 +209,8 @@ class Dpvalecom_model extends CI_Model {
        $sms_password = $this->config->item('sms_pass');*/
        if(ENVIRONMENT=="development"){
          //NEW BUS
-        $sms_url = "http://10.200.5.89:7085/sms/api/EnviarSMS";
-        // $sms_url = "http://aceqa.grupodp.com.mx:7085/sms/api/EnviarSMS";
+        // $sms_url = "http://10.200.5.89:7085/sms/api/EnviarSMS";
+        $sms_url = "http://aceqa.grupodp.com.mx:7085/sms/api/EnviarSMS";
         //OLD BUS
         // $sms_url = "http://10.200.3.102:7082/sms/api/EnviarSMS";
        }else{
