@@ -9,7 +9,8 @@ class Dpvalecom_model extends CI_Model {
     $this->load->library('webservices');
     // $this->url_ws_s2credit = "http://10.200.3.103:7082/pos/s2credit";
     $this->url_ws_s2credit = $this->config->item('WS_s2credit');
-    // echo $this->url_ws_s2credit;
+    echo $this->url_ws_s2credit;
+    die();
     //$this->db2 = $this->load->database('postgres',true);
     $this->db2 = $this->load->database('s2credit',true);
     $this->db3 = $this->load->database('default',true);
