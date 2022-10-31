@@ -13,7 +13,6 @@ class DpCard_model extends CI_Model {
         parent::__construct();
         $this->config->load_db_items();
         $this->load->library('webservices');
-        $this->portalemp = $this->load->database('portalemp',true);
     }
 
     public function validate_dpcard($request, $amount)
@@ -124,7 +123,7 @@ class DpCard_model extends CI_Model {
 
     public function getPromociones($amount)
     {
-        $result = $this->portalemp->query("SELECT valor, descripcion FROM dpcard_promociones WHERE estado = '1' AND deleted_at IS NULL AND montomin < '$amount'")->result_array();
+        $result = $this->db->query("SELECT valor, descripcion FROM dpcard_promociones WHERE estado = '1' AND deleted_at IS NULL AND montomin < '$amount'")->result_array();
         
         return $result;
     }
@@ -133,7 +132,7 @@ class DpCard_model extends CI_Model {
     {
         $query = "SELECT id, s2_tienda, dpvale, dpcard FROM dpcard_asignacion_pagos WHERE deleted_at IS NULL AND s2_tienda = '$tienda'";
 
-        $data = [];//$this->portalemp->query($query)->row_array();
+        $data = $this->db->query($query)->row_array();
 
         $result = "";
 
