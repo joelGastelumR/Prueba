@@ -61,17 +61,17 @@ class DpCard_model extends CI_Model {
         // {
             $response = $this->webservices->REST($request, $this->url["compra"], 'POST');
         
-            if($response["response"]["status"] == 1)
+            if($response["response"]->status == 1)
             {
                 $result["status"] = true;
-                $result["message"] = $response["response"]["msn"];
-                $result["result"] = ["codeSms" => md5($response["response"]["result"]["codeSms"])];
+                $result["message"] = $response["response"]->msn;
+                $result["result"] = ["codeSms" => md5($response["response"]->result->codeSms)];
             }
-            else if($response["response"]["status"] == 0 && empty($response["response"]["errors"]))
+            else if($response["response"]->status == 0 && empty($response["response"]->errors))
             {
-                throw new Exception($response["response"]["msn"], 1);
+                throw new Exception($response["response"]->msn, 1);
             }
-            else if($response["response"]["status"] == 0 && !empty($response["response"]["errors"]))
+            else if($response["response"]->status == 0 && !empty($response["response"]->errors))
             {
                 throw new Exception("No es posible establecer conexión, inténtelo más tarde.", 1);
             }
