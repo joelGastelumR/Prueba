@@ -57,8 +57,8 @@ class DpCard_model extends CI_Model {
     {
         $result = array( "status"=>false, "message"=>"", "result"=>[] );
 
-        try
-        {
+        // try
+        // {
             $response = $this->webservices->REST($request, $this->url["compra"], 'POST');
         
             if($response["response"]["status"] == 1)
@@ -79,10 +79,10 @@ class DpCard_model extends CI_Model {
             {
                 throw new Exception("Atención ha ocurrido un error inesperado, inténtelo más tarde.", 1);
             }
-        }
-        catch (\Throwable $th) {
-            $result["message"] = $th->getMessage();
-        }
+        // }
+        // catch (\Throwable $th) {
+        //     $result["message"] = $th->getMessage();
+        // }
 
         return $result;
     }
