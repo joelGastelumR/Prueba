@@ -136,8 +136,8 @@ class DpCard_controller extends MY_Controller {
     {
         $result = array( "status"=>false, "message"=>"", "result"=>[] );
 
-        // try
-        // {
+        try
+        {
             $dpcard = $this->input->get("dpcard");
             $amount = $this->getSession('amount');
             $tienda = $this->getSession('idbranch');
@@ -180,12 +180,12 @@ class DpCard_controller extends MY_Controller {
             {
                 $result = $validateDpCardResult;
             }
-        // }
-        // catch (\Throwable $th)
-        // {
-        //     $result["status"] = false;
-        //     $result["message"] = $th->getMessage();
-        // }
+        }
+        catch (\Throwable $th)
+        {
+            $result["status"] = false;
+            $result["message"] = $th->getMessage();
+        }
 
         echo json_encode($result);
     }
