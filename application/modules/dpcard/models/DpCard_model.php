@@ -22,7 +22,8 @@ class DpCard_model extends CI_Model {
         try
         {
             $response = $this->webservices->REST($request, $this->url["consultaSaldo"], 'POST');
-            var_dump($response); exit;
+            var_dump($response["response"]);
+            var_dump($response["response"]->status);exit;
         
             if($response["response"]->status == 0 && empty($response["response"]->errors))
             {
