@@ -19,8 +19,8 @@ class DpCard_model extends CI_Model {
     {
         $result = array( "status"=>false, "message"=>"", "result"=>[] );
 
-        try
-        {
+        //try
+        //{
             $response = $this->webservices->REST($request, $this->url["consultaSaldo"], 'POST');
         
             if($response["response"]->status == 0 && empty($response["response"]->errors))
@@ -45,10 +45,10 @@ class DpCard_model extends CI_Model {
             $result["result"]["cliente"] .= empty($response["response"]->result->customer->middleName) ? "" : " " . $response["response"]->result->customer->middleName;
             $result["result"]["cliente"] .= " " . $response["response"]->result->customer->lastName;
             $result["result"]["cliente"] .= " " . $response["response"]->result->customer->secondLastName;
-        }
+        /*}
         catch (\Throwable $th) {
             $result["message"] = $th->getMessage();
-        }
+        }*/
 
         return $result;
     }
