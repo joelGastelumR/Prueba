@@ -58,7 +58,7 @@ class DpCard_model extends CI_Model {
         $result = array( "status"=>false, "message"=>"", "result"=>[] );
 
         try
-        {var_dump($request);exit;
+        {
             $response = $this->webservices->REST($request, $this->url["compra"], 'POST');
         
             if($response["response"]->status == 1)
@@ -121,9 +121,9 @@ class DpCard_model extends CI_Model {
         return $result;
     }
 
-    public function getPromociones($amount)
+    public function getPromociones($tienda, $amount)
     {
-        $result = $this->db->query("SELECT valor, descripcion FROM dpcard_promociones WHERE estado = '1' AND deleted_at IS NULL AND montomin < '$amount'")->result_array();
+        $result = $this->db->query("SELECT valor, descripcion FROM dpcard_promociones WHERE estado = '1' AND deleted_at IS NULL AND s2_tienda = '$tienda' AND montomin < '$amount'")->result_array();
         
         return $result;
     }

@@ -120,13 +120,14 @@ class DpCard_controller extends MY_Controller {
         $codeSms = md5($this->input->get("codeSms"));
         $codeSmsSaved = $this->getSession('codeSms');
         $amount = $this->getSession('amount');
+        $tienda = $this->getSession('idbranch');
 
         if($codeSms == $codeSmsSaved)
         {
             $result["status"] = true;
             $result["message"] = "Correcto.";
             $result["result"]["cliente"] = $this->getSession('cliente');
-            $result["result"]["promociones"] = $this->DpCard_model->getPromociones($amount);
+            $result["result"]["promociones"] = $this->DpCard_model->getPromociones($tienda, $amount);
         }
 
         echo json_encode($result);
