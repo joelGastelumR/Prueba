@@ -209,6 +209,10 @@
         </div>
     </div>
 
+    <input type="hidden" value="<?php echo $hash; ?>" name="idtoken" id="idtoken">
+    <input type="hidden" value="<?php echo $monto; ?>" name="monto" id="txtMonto">
+    <input type="hidden" value="<?php echo $tienda; ?>" name="tienda" id="txtTienda">
+
     <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
@@ -217,6 +221,7 @@
     <script>
         $.blockUI.defaults.css = {};
         $(function(){
+            var validationCustomerResult = [];
 
             $("#btnCancelar, #btnFinalizarCompra").click(function(){
                 parent.postMessage('cerrar',"*");
@@ -227,7 +232,8 @@
                 {
                     ajax("<?php echo base_url('dpcard/DpCard_controller/confirmar_compra'); ?>", {
                         "dpcard": $("#txtDpCard").val(),
-                        "promocion": $("#selPromos").val()
+                        "promocion": $("#selPromos").val(),
+                        "code": $("#txtCodeSms").val()
                     }, "GET").then(function (result) {
                         if(result.status)
                         {
@@ -249,14 +255,16 @@
             $("#btnVarificarCodeSms").click(function(){
                 $("#btnSiguiente").addClass("disabled");
                 $("#btnSiguiente").attr("disabled", true);
+
                 ajax("<?php echo base_url('dpcard/DpCard_controller/validar_codesms'); ?>", {
-                    "codeSms": $("#txtCodeSms").val()
+                    "code": validationCustomerResult.code,
+                    "userCode": $("#txtCodeSms").val()
                 }, "GET").then(function (result) {
                     if(result.status)
                     {
-                        $("#txtCliente").val(result.result.cliente);
+                        $("#txtCliente").val(validationCustomerResult.cliente);
                         $("#selPromos").html('<option value="00">.:SELECCIONE:.</option>');
-                        $.each(result.result.promociones, function(index, value){
+                        $.each(result.result, function(index, value){
                             $("#selPromos").append('<option value="'+value.valor+'">'+value.descripcion+'</option>');
                         });
                         $("#btnSiguiente").removeClass("disabled");
@@ -267,6 +275,7 @@
             });
 
             $("#btnValidarDpCard, #btnReenviarCodigoSMS").click(function(){
+                validationCustomerResult = [];
                 if(parseInt($("#txtDpCard").val()) && $("#txtDpCard").val().length == 16)
                 {
                     $("#btnSiguiente").addClass("disabled");
@@ -274,9 +283,11 @@
 
                     ajax("<?php echo base_url('dpcard/DpCard_controller/validate_dpcard'); ?>", {
                         "dpcard": $("#txtDpCard").val()
-                    }, "GET").then(function (result) {
-                        if(result.status)
+                    }, "GET").then(function (response) {
+                        if(response.status)
                         {
+                            validationCustomerResult = response.result;
+                            $("#txtCodeSms").val("");
                             $("#modalSMS").modal("show");
                         }
                     });
@@ -373,6 +384,10 @@
             return new Promise(function(resolve, reject) {
                 var resultado = null;
                 type_ajax = type_ajax || "POST";
+                data_ajax["token"] = "<?php echo $hash; ?>";
+                data_ajax["itoken"] = $("#idtoken").val();
+                data_ajax["monto"] = $("#txtMonto").val();
+                data_ajax["tienda"] = $("#txtTienda").val();
                 $.ajax({
                     url: url_ajax,
                     method: type_ajax,

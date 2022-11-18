@@ -95,17 +95,17 @@ class DpCard_model extends CI_Model {
         {
             $response = $this->webservices->REST($request, $this->url["compra"], 'POST');
 
-            if($response["response"]["status"] == 1)
+            if($response["response"]->status == 1)
             {
                 $result["status"] = true;
-                $result["message"] = $response["response"]["msn"];
-                $result["result"] = ["codigo_autorizacion" => $response["response"]["result"]];
+                $result["message"] = $response["response"]->msn;
+                $result["result"] = ["codigo_autorizacion" => $response["response"]->result];
             }
-            else if($response["response"]["status"] == 0 && empty($response["response"]["errors"]))
+            else if($response["response"]->status == 0 && empty($response["response"]->errors))
             {
-                throw new Exception($response["response"]["msn"], 1);
+                throw new Exception($response["response"]->msn, 1);
             }
-            else if($response["response"]["status"] == 0 && !empty($response["response"]["errors"]))
+            else if($response["response"]->status == 0 && !empty($response["response"]->errors))
             {
                 throw new Exception("No es posible establecer conexión, inténtelo más tarde.", 1);
             }
@@ -121,9 +121,9 @@ class DpCard_model extends CI_Model {
         return $result;
     }
 
-    public function getPromociones($tienda, $amount)
+    public function getPromociones($storeCode, $amount)
     {
-        $result = $this->db->query("SELECT valor, descripcion FROM dpcard_promociones WHERE estado = '1' AND deleted_at IS NULL AND s2_tienda = '$tienda' AND montomin < '$amount'")->result_array();
+        $result = $this->db->query("SELECT valor, descripcion FROM dpcard_promociones WHERE estado = '1' AND deleted_at IS NULL AND tienda_dpcredito = '$storeCode' AND montomin < '$amount'")->result_array();
         
         return $result;
     }
@@ -151,7 +151,7 @@ class DpCard_model extends CI_Model {
 
     public function getInfo($token)
     {
-        $row = $this->db->query("SELECT cliente,hostvalido,token,s2_tienda FROM apikeys
+        $row = $this->db->query("SELECT cliente,hostvalido,token,s2_tienda,tienda_dpcredito FROM apikeys
                                 WHERE estado = '1' and token = '$token' ")->result();
         if($row){
             return $row;
@@ -174,6 +174,10 @@ class DpCard_model extends CI_Model {
     public function getDBSession($token,$name){
         $row = $this->db->query("SELECT valor FROM ci_sessions_ios WHERE token = '$token' AND variable = '$name'")->result();
         return $row;
+    }
+
+    private function setTracking($datos){
+        $this->db->insert('log_tracking', $datos);
     }
 }
 ?>
