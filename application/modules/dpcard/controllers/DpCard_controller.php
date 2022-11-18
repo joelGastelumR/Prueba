@@ -171,7 +171,7 @@ class DpCard_controller extends MY_Controller {
                     $result["status"] = true;
                     $result["message"] = "Correcto.";
                     $result["result"] = [
-                        "code" => md5($solicitudCompraResult["result"]["codeSms"]),
+                        "code" => $solicitudCompraResult["result"]["codeSms"],
                         "cliente" => $validateDpCardResult["result"]["cliente"]
                     ];
                 }
