@@ -35,6 +35,7 @@ class Dpvalecom_model extends CI_Model {
   public function getVale($folio, $token){
         $json = array("coupon-search"=>array("coupon"=>$folio));
         $data = $this->webservices->REST($json, $this->url_ws_s2credit, 'POST');
+
         $this->setTrackingWs($token, 'getVale', $folio, $json, $data);
     return $data;
   }
@@ -101,7 +102,7 @@ class Dpvalecom_model extends CI_Model {
        if(ENVIRONMENT=="development"){
          //NEW BUS
         // $sms_url = "http://10.200.5.89:7085/sms/api/EnviarSMS";
-        // $sms_url = "http://aceqa.grupodp.com.mx:7082/sms/api/EnviarSMS";
+        //$sms_url = "http://aceqa.grupodp.com.mx:7083/sms/api/EnviarSMS";
         //OLD BUS
         $sms_url = "http://10.200.3.102:7083/sms/api/EnviarSMS";
        }else{
@@ -210,7 +211,7 @@ class Dpvalecom_model extends CI_Model {
        if(ENVIRONMENT=="development"){
          //NEW BUS
         // $sms_url = "http://10.200.5.89:7085/sms/api/EnviarSMS";
-        // $sms_url = "http://aceqa.grupodp.com.mx:7082/sms/api/EnviarSMS";
+        //$sms_url = "http://aceqa.grupodp.com.mx:7083/sms/api/EnviarSMS";
         //OLD BUS
         $sms_url = "http://10.200.3.102:7083/sms/api/EnviarSMS";
        }else{
