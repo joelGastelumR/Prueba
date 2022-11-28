@@ -191,27 +191,78 @@
                     <p id="lbl_mensaje" class="form-text text-muted"></p>
                     <div class="row">
                         <div class="col-8">
-                            <div class="input-group mb-2" id="insert_code">
+                            <div class="input-group mb-2">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="label2">DPC-</span>
                                 </div>
                                 <input type="text" class="form-control form-control-lg" id="txtCodeSms" placeholder="0000000" maxlength="7" >
                             </div>
                         </div>
-                    <div class="col-12">
+                    </div>
                     <button type="button" class="btn btn-outline-secondary" id="btnReenviarCodigoSMS">Reenviar Código SMS </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="btnVarificarCodeSms">Verificar</button>
                 </div>
             </div>
             <!--  <p id="btn_reenvio_sms" class="form-text text-muted">Si no le ha llegado el mensaje puede volver enviarlo <button class="btn btn-primary" onclick="reenvio()">Reenviar</button></p>-->
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-success" id="btnVarificarCodeSms">Verificar</button>
+    </div>
+
+    <!-- Modal Compra Correcta-->
+    <div class="modal fade" id="modalCancelacion" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-12 text-center">
+                            <img class="main-logo" src="<?= base_url('/assets/imgs/dpcard.jpg') ?>">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <h6 class="text-center font-weight-bold">¿Seguro que desea cancelar su pedido?</h6>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Motivo</span>
+                                </div>
+                                <select class="form-control" id="modalCancelacion_selMotivo" onchange="if(this.value == 'Otro'){$('#modalCancelacion_txtOtro').parents('.row').show(200);}else{$('#modalCancelacion_txtOtro').parents('.row').hide(200);}">
+                                    <option value="">.:SELECCIONE:.</option>
+                                    <option value="Me he equivocado en el pedido, haré uno nuevo">Me he equivocado en el pedido, haré uno nuevo</option>
+                                    <option value="No me convencen las promociones">No me convencen las promociones</option>
+                                    <option value="Ya no lo necesitaba">Ya no lo necesitaba</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="display: none;">
+                        <div class="col-md-12">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Otro</span>
+                                </div>
+                                <input type="text" class="form-control form-control" id="modalCancelacion_txtOtro" placeholder="Su descripción" maxlength="80"/>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12 text-right">
+                            <button type="button" class="btn btn-danger" id="modalCancelacion_btnCancelar">CONFIRMAR CANCELACIÓN</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <input type="hidden" value="<?php echo $hash; ?>" name="idtoken" id="idtoken">
-    <input type="hidden" value="<?php echo $monto; ?>" name="monto" id="txtMonto">
-    <input type="hidden" value="<?php echo $tienda; ?>" name="tienda" id="txtTienda">
 
     <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -221,10 +272,34 @@
     <script>
         $.blockUI.defaults.css = {};
         $(function(){
-            var validationCustomerResult = [];
 
-            $("#btnCancelar, #btnFinalizarCompra").click(function(){
+            $("#btnCancelar").click(function(){
+                $("#modalCancelacion").modal("show");
+            });
+
+            $("#btnFinalizarCompra").click(function(){
                 parent.postMessage('cerrar',"*");
+            });
+
+            $("#modalCancelacion_btnCancelar").click(function(){
+                var motivo = $("#modalCancelacion_selMotivo").val();
+                
+                if(motivo == ""){
+                    mensaje("alerta", "Necesita seleccionar un motivo de cancelación.", function(){
+                        setTimeout(() => {
+                            $("#modalCancelacion_selMotivo").focus();
+                        }, 200);
+                    });
+                    return;
+                }
+                
+                motivo = (motivo == "Otro") ? $("#modalCancelacion_txtOtro").val() : motivo;
+
+                ajax("<?php echo base_url('dpcard/DpCard_controller/guardar_motivo_cancelacion'); ?>", {
+                    "motivo": motivo
+                }, "GET").then(function (response) {
+                    parent.postMessage('cerrar',"*");
+                });
             });
 
             $("#btnSiguiente").click(function(){
@@ -233,7 +308,6 @@
                     ajax("<?php echo base_url('dpcard/DpCard_controller/confirmar_compra'); ?>", {
                         "dpcard": $("#txtDpCard").val(),
                         "promocion": $("#selPromos").val(),
-                        "code": $("#txtCodeSms").val()
                     }, "GET").then(function (result) {
                         if(result.status)
                         {
@@ -257,14 +331,13 @@
                 $("#btnSiguiente").attr("disabled", true);
 
                 ajax("<?php echo base_url('dpcard/DpCard_controller/validar_codesms'); ?>", {
-                    "code": validationCustomerResult.code,
                     "userCode": $("#txtCodeSms").val()
-                }, "GET").then(function (result) {
-                    if(result.status)
+                }, "GET").then(function (response) {
+                    if(response.status)
                     {
-                        $("#txtCliente").val(validationCustomerResult.cliente);
+                        $("#txtCliente").val(response.result.customer);
                         $("#selPromos").html('<option value="00">.:SELECCIONE:.</option>');
-                        $.each(result.result, function(index, value){
+                        $.each(response.result.promotions, function(index, value){
                             $("#selPromos").append('<option value="'+value.valor+'">'+value.descripcion+'</option>');
                         });
                         $("#btnSiguiente").removeClass("disabled");
@@ -275,7 +348,6 @@
             });
 
             $("#btnValidarDpCard, #btnReenviarCodigoSMS").click(function(){
-                validationCustomerResult = [];
                 if(parseInt($("#txtDpCard").val()) && $("#txtDpCard").val().length == 16)
                 {
                     $("#btnSiguiente").addClass("disabled");
@@ -286,7 +358,6 @@
                     }, "GET").then(function (response) {
                         if(response.status)
                         {
-                            validationCustomerResult = response.result;
                             $("#txtCodeSms").val("");
                             $("#modalSMS").modal("show");
                         }
@@ -302,6 +373,7 @@
                 }
                 
             });
+        
         });
 
 
@@ -386,8 +458,6 @@
                 type_ajax = type_ajax || "POST";
                 data_ajax["token"] = "<?php echo $hash; ?>";
                 data_ajax["itoken"] = $("#idtoken").val();
-                data_ajax["monto"] = $("#txtMonto").val();
-                data_ajax["tienda"] = $("#txtTienda").val();
                 $.ajax({
                     url: url_ajax,
                     method: type_ajax,

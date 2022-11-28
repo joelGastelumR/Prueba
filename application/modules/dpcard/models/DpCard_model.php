@@ -41,6 +41,7 @@ class DpCard_model extends CI_Model {
             }
 
             $result["status"] = true;
+            $result["result"]["idCustomer"] = $response["response"]->result->customer->idCustomer;
             $result["result"]["cliente"] = $response["response"]->result->customer->name;
             $result["result"]["cliente"] .= empty($response["response"]->result->customer->middleName) ? "" : " " . $response["response"]->result->customer->middleName;
             $result["result"]["cliente"] .= " " . $response["response"]->result->customer->lastName;
@@ -65,7 +66,7 @@ class DpCard_model extends CI_Model {
             {
                 $result["status"] = true;
                 $result["message"] = $response["response"]->msn;
-                $result["result"] = ["codeSms" => md5($response["response"]->result->codeSms)];
+                $result["result"] = ["codeSms" => $response["response"]->result->codeSms];
             }
             else if($response["response"]->status == 0 && empty($response["response"]->errors))
             {
@@ -151,13 +152,31 @@ class DpCard_model extends CI_Model {
 
     public function getInfo($token)
     {
-        $row = $this->db->query("SELECT cliente,hostvalido,token,s2_tienda,tienda_dpcredito FROM apikeys
-                                WHERE estado = '1' and token = '$token' ")->result();
+        $row = $this->db->query("SELECT cliente,hostvalido,token,s2_tienda,tienda_dpcredito,idcliente FROM apikeys
+                                WHERE estado = '1' and token = '$token' ")->row();
         if($row){
             return $row;
         }else{
             return "error";
         }
+    }
+
+    public function guardar_motivo_cancelacion($data)
+    {
+        $result = array( "status"=>false, "message"=>"", "result"=>[] );
+
+        try
+        {
+            $this->db->insert('dpcard_motivos_cancelacion', $data);
+
+            $result["status"] = true;
+            $result["message"] = "Correcto.";
+        }
+        catch (\Throwable $th) {
+            $result["message"] = $th->getMessage();
+        }
+
+        return $result;
     }
 
     public function saveDBSession($token,$name,$value){
