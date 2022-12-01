@@ -212,7 +212,7 @@ class Dpvalecom_model extends CI_Model {
         // $sms_url = "http://10.200.5.89:7085/sms/api/EnviarSMS";
         // $sms_url = "http://aceqa.grupodp.com.mx:7082/sms/api/EnviarSMS";
         //OLD BUS
-        $sms_url = "http://10.200.3.102:7083/sms/api/EnviarSMS";
+        $sms_url = "http://10.200.3.102:7082/sms/api/EnviarSMS";
        }else{
         $sms_url = "http://10.200.3.103:7082/sms/api/EnviarSMS";
        }
