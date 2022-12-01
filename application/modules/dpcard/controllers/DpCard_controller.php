@@ -88,6 +88,7 @@ class DpCard_controller extends MY_Controller {
                 $data['hash'] = $this->hash;
                 $data['ordenid'] = ($orden == 0 || $orden == '')?'N/A':$orden;
                 $data['key'] = $key;
+                $data['monto'] = $monto;
                 $this->setSession('amount', $monto);
                 $this->setSession('idbranch', $row->tienda_dpcredito);
                 $this->setSession('orderId', $orden);
