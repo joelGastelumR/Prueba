@@ -15,13 +15,15 @@ class DpCard_model extends CI_Model {
         $this->load->library('webservices');
     }
 
-    public function validate_dpcard($request, $amount)
+    public function validate_dpcard($token, $request, $amount)
     {
         $result = array( "status"=>false, "message"=>"", "result"=>[] );
 
         try
         {
             $response = $this->webservices->REST($request, $this->url["consultaSaldo"], 'POST');
+
+            $this->setTrackingWs($token, 'validate_dpcard', $request["cardNumber"], $request, $response);
         
             if($response["response"]->status == 0 && empty($response["response"]->errors))
             {
@@ -54,13 +56,15 @@ class DpCard_model extends CI_Model {
         return $result;
     }
 
-    public function generarSolicitudCompra($request)
+    public function generarSolicitudCompra($token, $request)
     {
         $result = array( "status"=>false, "message"=>"", "result"=>[] );
 
         try
         {
             $response = $this->webservices->REST($request, $this->url["compra"], 'POST');
+
+            $this->setTrackingWs($token, 'generarSolicitudCompra', $request["cardNumber"], $request, $response);
         
             if($response["response"]->status == 1)
             {
@@ -88,13 +92,39 @@ class DpCard_model extends CI_Model {
         return $result;
     }
 
-    public function confirmar_compra($request)
+    public function confirmar_compra($token, $orderId, $request)
     {
         $result = array( "status"=>false, "message"=>"", "result"=>[] );
 
         try
         {
+            #debug tracking preventa
+            $track = array(
+                'tienda' => $request["codeStore"],
+                'metodo' => 'preventa',
+                'pedido' => $orderId,
+                'folio' => $request["cardNumber"],
+                'tipo' =>'DCARD',
+                'request' => json_encode($request, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                'fechahora' => date('Y-m-d H:i:s')
+            );
+            $this->setTracking($track);
+
             $response = $this->webservices->REST($request, $this->url["compra"], 'POST');
+
+            $this->setTrackingWs($token, 'confirmar_compra', $request["cardNumber"], $request, $response);
+
+            #debug tracking postventa
+            $datos = array(
+                'tienda' => $request["codeStore"],
+                'metodo' => 'postventa',
+                'pedido' => $orderId,
+                'folio' => $request["cardNumber"],
+                'tipo' =>'DCARD',
+                'response' => json_encode($response["response"], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                'fechahora' => date('Y-m-d H:i:s')
+            );
+            $this->setTracking($datos);
 
             if($response["response"]->status == 1)
             {
@@ -126,6 +156,8 @@ class DpCard_model extends CI_Model {
     {
         $result = $this->db->query("SELECT valor, descripcion FROM dpcard_promociones WHERE estado = '1' AND deleted_at IS NULL AND tienda_dpcredito = '$storeCode' AND montomin < '$amount'")->result_array();
         
+        //$result = $this->db->query("SELECT valor, descripcion FROM dpcard_promociones AS p INNER JOIN dpcard_asignacion_tiendas AS asigT ON asigT.tienda_dpcredito = p.tienda_dpcredito WHERE id_usuario = '$id_usuario' AND estado = '1' AND deleted_at IS NULL AND p.tienda_dpcredito = '$storeCode' AND montomin < '$amount'")->result_array();
+
         return $result;
     }
 
@@ -197,6 +229,18 @@ class DpCard_model extends CI_Model {
 
     private function setTracking($datos){
         $this->db->insert('log_tracking', $datos);
+    }
+
+    public function setTrackingWs($token, $metodo, $folio, $request, $response){
+        $data = array(
+            'token' => $token,
+            'metodo' => $metodo,
+            'folio' => $folio,
+            'request' => json_encode($request, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+            'response' => json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+            'fechahora' => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('log_tracking_ws', $data);
     }
 }
 ?>

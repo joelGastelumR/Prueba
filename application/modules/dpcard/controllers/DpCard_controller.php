@@ -121,12 +121,12 @@ class DpCard_controller extends MY_Controller {
                 throw new Exception("Atención, los datos enviados no son correctos, favor de revisarlos.", 1);
             }
 
-            $validateDpCardResult = $this->DpCard_model->validate_dpcard(["cardNumber" => $dpcard], $amount);
+            $validateDpCardResult = $this->DpCard_model->validate_dpcard($this->hash, ["cardNumber" => $dpcard], $amount);
 
             if($validateDpCardResult["status"])
             {
                 /*GENERAR SOLICITUD DE COMPRA Y ENVIAR SMS*/
-                $solicitudCompraResult = $this->DpCard_model->generarSolicitudCompra([
+                $solicitudCompraResult = $this->DpCard_model->generarSolicitudCompra($this->hash, [
                     "idCredit" => "",
                     "cardNumber" => $dpcard,
                     "amount" => "0",
@@ -200,6 +200,7 @@ class DpCard_controller extends MY_Controller {
             $amount = $this->getSession('amount');
             $codeSms = $this->getSession('codeSms');
             $storeCode = $this->getSession('idbranch');
+            $orderId = $this->getSession('orderId');
 
             if( !is_numeric($dpcard) || strlen($dpcard) != 16 || empty($promocion) || empty($codeSms) || empty($amount) )
             {
@@ -207,7 +208,7 @@ class DpCard_controller extends MY_Controller {
             }
 
             /*CONFIRMAR SOLICITUD DE COMPRA*/
-            $result = $this->DpCard_model->confirmar_compra([
+            $result = $this->DpCard_model->confirmar_compra($this->$hash, $orderId, [
                 "idCredit" => "",
                 "cardNumber" => $dpcard,
                 "amount" => $amount,
