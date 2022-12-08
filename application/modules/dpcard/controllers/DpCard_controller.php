@@ -208,7 +208,7 @@ class DpCard_controller extends MY_Controller {
             }
 
             /*CONFIRMAR SOLICITUD DE COMPRA*/
-            $result = $this->DpCard_model->confirmar_compra($this->$hash, $orderId, [
+            $result = $this->DpCard_model->confirmar_compra($this->hash, $orderId, [
                 "idCredit" => "",
                 "cardNumber" => $dpcard,
                 "amount" => $amount,

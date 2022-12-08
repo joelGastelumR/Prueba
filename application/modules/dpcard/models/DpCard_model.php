@@ -238,7 +238,8 @@ class DpCard_model extends CI_Model {
             'folio' => $folio,
             'request' => json_encode($request, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'response' => json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-            'fechahora' => date('Y-m-d H:i:s')
+            'fechahora' => date('Y-m-d H:i:s'),
+            "plataforma" => "DCARD"
         );
         $this->db->insert('log_tracking_ws', $data);
     }
