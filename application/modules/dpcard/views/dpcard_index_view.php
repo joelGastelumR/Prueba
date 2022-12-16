@@ -269,6 +269,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+    <script type='text/javascript' src="<?php echo base_url(); ?>assets/cryptojs-aes/cryptojs-aes-format.js"></script>
+    <script type='text/javascript' src="<?php echo base_url(); ?>assets/cryptojs-aes/cryptojs-aes.min.js"></script>
     <script>
         $.blockUI.defaults.css = {};
         $(function(){
@@ -313,7 +315,7 @@
                 if(parseInt($("#txtDpCard").val()) && $("#txtDpCard").val().length == 16 && $("#txtCliente").val() != "")
                 {
                     ajax("<?php echo base_url('dpcard/DpCard_controller/confirmar_compra'); ?>", {
-                        "dpcard": $("#txtDpCard").val(),
+                        "dpcard": btoa(JSON.stringify(CryptoJSAesJson.encrypt($("#txtDpCard").val(), "<?php echo $hash; ?>"))),
                         "promocion": $("#selPromos").val(),
                     }, "GET").then(function (result) {
                         if(result.status)
@@ -361,7 +363,7 @@
                     $("#btnSiguiente").attr("disabled", true);
 
                     ajax("<?php echo base_url('dpcard/DpCard_controller/validate_dpcard'); ?>", {
-                        "dpcard": $("#txtDpCard").val()
+                        "dpcard": btoa(JSON.stringify(CryptoJSAesJson.encrypt($("#txtDpCard").val(), "<?php echo $hash; ?>")))
                     }, "GET").then(function (response) {
                         if(response.status)
                         {
@@ -491,7 +493,14 @@
                             }
                         } catch (error)
                         {
-                            mensaje("alerta", error);
+                            if(url_ajax == "<?php echo base_url('dpcard/DpCard_controller/confirmar_compra'); ?>")
+                            {
+                                $("#btnValidarDpCard").click();
+                            }
+                            else
+                            {
+                                mensaje("alerta", error);
+                            }
                         }
                         resolve(resultado);
                     },

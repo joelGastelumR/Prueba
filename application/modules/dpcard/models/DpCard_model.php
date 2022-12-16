@@ -105,7 +105,7 @@ class DpCard_model extends CI_Model {
                 'pedido' => $orderId,
                 'folio' => $request["cardNumber"],
                 'tipo' =>'DCARD',
-                'request' => json_encode($request, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                'request' => $request,
                 'fechahora' => date('Y-m-d H:i:s')
             );
             $this->setTracking($track);
@@ -228,14 +228,31 @@ class DpCard_model extends CI_Model {
     }
 
     private function setTracking($datos){
+        $datos["folio"] = openssl_encrypt($datos["folio"], "AES-128-CTR", $this->config->item('CRYPT_KEY'), 0, $this->config->item('CRYPT_IV'));
+        
+        if(!empty($datos["request"]))
+        {
+            if(!empty($datos["request"]["cardNumber"]))
+            {
+                $datos["request"]["cardNumber"] = openssl_encrypt($datos["request"]["cardNumber"], "AES-128-CTR", $this->config->item('CRYPT_KEY'), 0, $this->config->item('CRYPT_IV'));
+            }
+
+            $datos["request"] = json_encode($datos["request"], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        }
+        
         $this->db->insert('log_tracking', $datos);
     }
 
     public function setTrackingWs($token, $metodo, $folio, $request, $response){
+        if(!empty($request["cardNumber"]))
+        {
+            $request["cardNumber"] = openssl_encrypt($request["cardNumber"], "AES-128-CTR", $this->config->item('CRYPT_KEY'), 0, $this->config->item('CRYPT_IV'));
+        }
+
         $data = array(
             'token' => $token,
             'metodo' => $metodo,
-            'folio' => $folio,
+            'folio' => openssl_encrypt($folio, "AES-128-CTR", $this->config->item('CRYPT_KEY'), 0, $this->config->item('CRYPT_IV')),
             'request' => json_encode($request, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'response' => json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'fechahora' => date('Y-m-d H:i:s'),
