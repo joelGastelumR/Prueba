@@ -147,7 +147,7 @@ class DpCard_controller extends MY_Controller {
                     $this->setSession('customer', $validateDpCardResult["result"]["cliente"]);
 
                     $result["status"] = true;
-                    $result["message"] = "Correcto.".$solicitudCompraResult["result"]["codeSms"];
+                    $result["message"] = "Correcto.";
                 }
                 else
                 {
