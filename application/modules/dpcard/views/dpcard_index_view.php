@@ -109,7 +109,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Promos:</div>
                             </div>
-                            <select class="form-control" id="selPromos">
+                            <select class="form-control" id="selPromos" autocomplete="off">
                                 <option value="00">.:SELECCIONE:.</option>
                             </select>
                         </div>
@@ -312,27 +312,46 @@
             });
 
             $("#btnSiguiente").click(function(){
-                if(parseInt($("#txtDpCard").val()) && $("#txtDpCard").val().length == 16 && $("#txtCliente").val() != "")
+                if($("#selPromos").val() == "00")
                 {
-                    ajax("<?php echo base_url('dpcard/DpCard_controller/confirmar_compra'); ?>", {
-                        "dpcard": btoa(JSON.stringify(CryptoJSAesJson.encrypt($("#txtDpCard").val(), "<?php echo $hash; ?>"))),
-                        "promocion": $("#selPromos").val(),
-                    }, "GET").then(function (result) {
-                        if(result.status)
-                        {
-                            $("#lblNoAutorizacion").html(result.result.codigo_autorizacion);
-                            $("#modalCompraCorrecta").modal("show");
-                        }
+                    mensaje("alerta", "Necesita seleccionar una promoción. Favor de revisar.", function(){
+                        setTimeout(() => {
+                            $("#selPromos").focus();
+                        }, 200);
                     });
+                    return;
                 }
-                else
+
+                if(!parseInt($("#txtDpCard").val()) || $("#txtDpCard").val().length != 16)
                 {
                     mensaje("alerta", "El número de tarjeta debe ser de 16 digitos.", function(){
                         setTimeout(() => {
                             $("#txtDpCard").focus();
                         }, 200);
                     });
+                    return;
                 }
+
+                if($("#txtCliente").val() == "")
+                {
+                    mensaje("alerta", "Favor de validar cliente mediante código sms.", function(){
+                        setTimeout(() => {
+                            $("#txtCliente").focus();
+                        }, 200);
+                    });
+                    return;
+                }
+
+                ajax("<?php echo base_url('dpcard/DpCard_controller/confirmar_compra'); ?>", {
+                    "dpcard": btoa(JSON.stringify(CryptoJSAesJson.encrypt($("#txtDpCard").val(), "<?php echo $hash; ?>"))),
+                    "promocion": $("#selPromos").val(),
+                }, "GET").then(function (result) {
+                    if(result.status)
+                    {
+                        $("#lblNoAutorizacion").html(result.result.codigo_autorizacion);
+                        $("#modalCompraCorrecta").modal("show");
+                    }
+                });
             });
 
             $("#btnVarificarCodeSms").click(function(){
@@ -495,7 +514,10 @@
                         {
                             if(url_ajax == "<?php echo base_url('dpcard/DpCard_controller/confirmar_compra'); ?>")
                             {
-                                $("#btnValidarDpCard").click();
+                                error += "\n\nSe reenviará un código vía sms para volver a validar al cliente.";
+                                mensaje("alerta", error, function(){
+                                    $("#btnValidarDpCard").click();
+                                });
                             }
                             else
                             {
