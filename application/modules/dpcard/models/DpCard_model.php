@@ -161,27 +161,6 @@ class DpCard_model extends CI_Model {
         return $result;
     }
 
-    public function obtenerTiposDePagoPorTienda($tienda)
-    {
-        $query = "SELECT id, s2_tienda, dpvale, dpcard FROM dpcard_asignacion_pagos WHERE deleted_at IS NULL AND s2_tienda = '$tienda'";
-
-        $data = $this->db->query($query)->row_array();
-
-        $result = "";
-
-        if(isset($data["dpcard"]) && $data["dpcard"] == 1)
-        {
-            $result .= "DPCARD|";
-        }
-        
-        if((isset($data["dpvale"]) && $data["dpvale"] == 1))
-        {
-            $result .= "DPVALE|";
-        }
-
-        return $result;
-    }
-
     public function getInfo($token)
     {
         $row = $this->db->query("SELECT cliente,hostvalido,token,s2_tienda,tienda_dpcredito,idcliente FROM apikeys

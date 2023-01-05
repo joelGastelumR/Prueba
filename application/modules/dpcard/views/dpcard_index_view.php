@@ -110,7 +110,7 @@
                                 <div class="input-group-text">Promos:</div>
                             </div>
                             <select class="form-control" id="selPromos" autocomplete="off">
-                                <option value="00">.:SELECCIONE:.</option>
+                                <option value="">.:SELECCIONE:.</option>
                             </select>
                         </div>
                     </div>
@@ -312,7 +312,7 @@
             });
 
             $("#btnSiguiente").click(function(){
-                if($("#selPromos").val() == "00")
+                if($("#selPromos").val() == "")
                 {
                     mensaje("alerta", "Necesita seleccionar una promoción. Favor de revisar.", function(){
                         setTimeout(() => {
@@ -364,7 +364,7 @@
                     if(response.status)
                     {
                         $("#txtCliente").val(response.result.customer);
-                        $("#selPromos").html('<option value="00">.:SELECCIONE:.</option>');
+                        $("#selPromos").html('<option value="">.:SELECCIONE:.</option>');
                         $.each(response.result.promotions, function(index, value){
                             $("#selPromos").append('<option value="'+value.valor+'">'+value.descripcion+'</option>');
                         });
