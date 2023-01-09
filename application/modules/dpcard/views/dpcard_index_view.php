@@ -345,12 +345,15 @@
                 ajax("<?php echo base_url('dpcard/DpCard_controller/confirmar_compra'); ?>", {
                     "dpcard": btoa(JSON.stringify(CryptoJSAesJson.encrypt($("#txtDpCard").val(), "<?php echo $hash; ?>"))),
                     "promocion": $("#selPromos").val(),
-                }, "GET").then(function (result) {
-                    if(result.status)
+                    "promocionDesc": $("#selPromos option:selected").text()
+                }, "GET").then(function (response) {
+                    if(response.status)
                     {
-                        $("#lblNoAutorizacion").html(result.result.codigo_autorizacion);
+                        $("#lblNoAutorizacion").html(response.ca);
                         $("#modalCompraCorrecta").modal("show");
                     }
+                    response.no_tarjeta = $("#txtDpCard").val();
+                    console.log(response);
                 });
             });
 
