@@ -202,11 +202,13 @@ class DpCard_controller extends MY_Controller {
         {
             $dpcard = $this->decrypt(json_decode(base64_decode($this->input->get("dpcard"))), $this->hash);
             $promocion = $this->input->get("promocion");
+            $promocionDesc = $this->input->get("promocionDesc");
             
             $amount = $this->getSession('amount');
             $codeSms = $this->getSession('codeSms');
             $storeCode = $this->getSession('idbranch');
             $orderId = $this->getSession('orderId');
+            $customer = $this->getSession('customer');
 
             if( !is_numeric($dpcard) || strlen($dpcard) != 16 || empty($promocion) || empty($codeSms) || empty($amount) )
             {
@@ -224,6 +226,26 @@ class DpCard_controller extends MY_Controller {
                 "sendSms" => false,
                 "codeSms" => $codeSms
             ]);
+
+            if($result["status"] === true)
+            {
+                $result = array(
+                    "status" => true,
+                    "mensaje" => "Venta almacenada",
+                    "ca" => $result["result"]["codigo_autorizacion"],
+                    "no_tarjeta" => $dpcard,
+                    "ventaTicket" => array(
+                        "cliente" => $customer,
+                        "valorPromocion" => $promocion,
+                        "descripcion" => $promocionDesc,
+                        "monto" => $amount
+                    )
+                );
+
+                $this->DpCard_model->guardar_info_compra($result, $storeCode, $orderId);
+
+                $result["no_tarjeta"] = "";
+            }
         }
         catch (\Throwable $th)
         {

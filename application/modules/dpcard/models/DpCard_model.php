@@ -154,42 +154,46 @@ class DpCard_model extends CI_Model {
 
     public function getPromociones($storeCode, $amount)
     {
-        $result = $this->db->query("SELECT valor, descripcion FROM dpcard_promociones WHERE estado = '1' AND deleted_at IS NULL AND tienda_dpcredito = '$storeCode' AND montomin < '$amount'")->result_array();
-        
-        //$result = $this->db->query("SELECT valor, descripcion FROM dpcard_promociones AS p INNER JOIN dpcard_asignacion_tiendas AS asigT ON asigT.tienda_dpcredito = p.tienda_dpcredito WHERE id_usuario = '$id_usuario' AND estado = '1' AND deleted_at IS NULL AND p.tienda_dpcredito = '$storeCode' AND montomin < '$amount'")->result_array();
-
-        return $result;
-    }
-
-    public function obtenerTiposDePagoPorTienda($tienda)
-    {
-        $query = "SELECT id, s2_tienda, dpvale, dpcard FROM dpcard_asignacion_pagos WHERE deleted_at IS NULL AND s2_tienda = '$tienda'";
-
-        $data = $this->db->query($query)->row_array();
-
-        $result = "";
-
-        if(isset($data["dpcard"]) && $data["dpcard"] == 1)
+        $result = array();
+        try
         {
-            $result .= "DPCARD|";
+            $result = $this->db->query("SELECT valor, descripcion FROM dpcard_promociones WHERE estado = '1' AND deleted_at IS NULL AND tienda_dpcredito = '$storeCode' AND montomin < '$amount'")->result_array();
         }
-        
-        if((isset($data["dpvale"]) && $data["dpvale"] == 1))
-        {
-            $result .= "DPVALE|";
+        catch (\Throwable $th) {
         }
-
         return $result;
     }
 
     public function getInfo($token)
     {
-        $row = $this->db->query("SELECT cliente,hostvalido,token,s2_tienda,tienda_dpcredito,idcliente FROM apikeys
-                                WHERE estado = '1' and token = '$token' ")->row();
-        if($row){
-            return $row;
-        }else{
-            return "error";
+        $result = "error";
+        try
+        {
+            $result = $this->db->query("SELECT cliente,hostvalido,token,s2_tienda,tienda_dpcredito,idcliente FROM apikeys WHERE estado = '1' and token = '$token' ")->row();
+        }
+        catch (\Throwable $th) {
+            $result = "error";
+        }
+        return $result;
+    }
+
+    private function guardar_info_compra($datos, $codeStore, $orderId)
+    {
+        try
+        {
+            $datos["no_tarjeta"] = openssl_encrypt($datos["no_tarjeta"], "AES-128-CTR", $this->config->item('CRYPT_KEY'), 0, $this->config->item('CRYPT_IV'));
+            
+            $this->db->insert('log_tracking', array(
+                'tienda' => $codeStore,
+                'metodo' => 'resultVenta',
+                'pedido' => $orderId,
+                'folio' => $datos["no_tarjeta"],
+                'tipo' =>'DCARD',
+                'response' => json_encode($datos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                'fechahora' => date('Y-m-d H:i:s')
+            ));
+        }
+        catch (\Throwable $th) {
         }
     }
 
@@ -212,53 +216,74 @@ class DpCard_model extends CI_Model {
     }
 
     public function saveDBSession($token,$name,$value){
-        $row = $this->db->query("SELECT id FROM ci_sessions_ios WHERE token = '$token' AND variable = '$name'")->result();
-        if($row){
-            $this->db->where('token', $token);
-            $this->db->where('variable', $name);
-            $this->db->update('ci_sessions_ios', ["valor"=>$value]);
-        }else{
-            $this->db->insert('ci_sessions_ios', ["token" =>$token, "variable"=>$name, "valor"=>$value]);
+        try
+        {
+            $row = $this->db->query("SELECT id FROM ci_sessions_ios WHERE token = '$token' AND variable = '$name'")->result();
+            if($row){
+                $this->db->where('token', $token);
+                $this->db->where('variable', $name);
+                $this->db->update('ci_sessions_ios', ["valor"=>$value]);
+            }else{
+                $this->db->insert('ci_sessions_ios', ["token" =>$token, "variable"=>$name, "valor"=>$value]);
+            }
+        }
+        catch (\Throwable $th) {
         }
     }
 
     public function getDBSession($token,$name){
-        $row = $this->db->query("SELECT valor FROM ci_sessions_ios WHERE token = '$token' AND variable = '$name'")->result();
-        return $row;
+        try
+        {
+            $row = $this->db->query("SELECT valor FROM ci_sessions_ios WHERE token = '$token' AND variable = '$name'")->result();
+            return $row;
+        }
+        catch (\Throwable $th) {
+        }
+        return array();
     }
 
     private function setTracking($datos){
-        $datos["folio"] = openssl_encrypt($datos["folio"], "AES-128-CTR", $this->config->item('CRYPT_KEY'), 0, $this->config->item('CRYPT_IV'));
-        
-        if(!empty($datos["request"]))
+        try
         {
-            if(!empty($datos["request"]["cardNumber"]))
-            {
-                $datos["request"]["cardNumber"] = openssl_encrypt($datos["request"]["cardNumber"], "AES-128-CTR", $this->config->item('CRYPT_KEY'), 0, $this->config->item('CRYPT_IV'));
-            }
-
-            $datos["request"] = json_encode($datos["request"], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        }
+            $datos["folio"] = openssl_encrypt($datos["folio"], "AES-128-CTR", $this->config->item('CRYPT_KEY'), 0, $this->config->item('CRYPT_IV'));
         
-        $this->db->insert('log_tracking', $datos);
+            if(!empty($datos["request"]))
+            {
+                if(!empty($datos["request"]["cardNumber"]))
+                {
+                    $datos["request"]["cardNumber"] = openssl_encrypt($datos["request"]["cardNumber"], "AES-128-CTR", $this->config->item('CRYPT_KEY'), 0, $this->config->item('CRYPT_IV'));
+                }
+
+                $datos["request"] = json_encode($datos["request"], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            }
+            
+            $this->db->insert('log_tracking', $datos);
+        }
+        catch (\Throwable $th) {
+        }
     }
 
     public function setTrackingWs($token, $metodo, $folio, $request, $response){
-        if(!empty($request["cardNumber"]))
+        try
         {
-            $request["cardNumber"] = openssl_encrypt($request["cardNumber"], "AES-128-CTR", $this->config->item('CRYPT_KEY'), 0, $this->config->item('CRYPT_IV'));
-        }
+            if(!empty($request["cardNumber"]))
+            {
+                $request["cardNumber"] = openssl_encrypt($request["cardNumber"], "AES-128-CTR", $this->config->item('CRYPT_KEY'), 0, $this->config->item('CRYPT_IV'));
+            }
 
-        $data = array(
-            'token' => $token,
-            'metodo' => $metodo,
-            'folio' => openssl_encrypt($folio, "AES-128-CTR", $this->config->item('CRYPT_KEY'), 0, $this->config->item('CRYPT_IV')),
-            'request' => json_encode($request, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-            'response' => json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-            'fechahora' => date('Y-m-d H:i:s'),
-            "plataforma" => "DCARD"
-        );
-        $this->db->insert('log_tracking_ws', $data);
+            $data = array(
+                'token' => $token,
+                'metodo' => $metodo,
+                'folio' => openssl_encrypt($folio, "AES-128-CTR", $this->config->item('CRYPT_KEY'), 0, $this->config->item('CRYPT_IV')),
+                'request' => json_encode($request, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                'response' => json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                'fechahora' => date('Y-m-d H:i:s'),
+                "plataforma" => "DCARD"
+            );
+            $this->db->insert('log_tracking_ws', $data);
+        }
+        catch (\Throwable $th) {
+        }
     }
 }
 ?>
