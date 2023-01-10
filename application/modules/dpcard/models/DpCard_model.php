@@ -177,7 +177,7 @@ class DpCard_model extends CI_Model {
         return $result;
     }
 
-    private function guardar_info_compra($datos, $codeStore, $orderId)
+    public function guardar_info_compra($datos, $codeStore, $orderId)
     {
         try
         {
