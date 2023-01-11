@@ -37,8 +37,8 @@ class DpCard_controller extends MY_Controller {
             /*busco datos del api*/
             $row = $this->DpCard_model->getInfo($token);
 
-            $tiposPago .= (empty($row[0]->s2_tienda)) ? "" : "DPVALE|";
-            $tiposPago .= (empty($row[0]->tienda_dpcredito)) ? "" : "DPCARD|";
+            $tiposPago .= (empty($row->s2_tienda)) ? "" : "DPVALE|";
+            $tiposPago .= (empty($row->tienda_dpcredito)) ? "" : "DPCARD|";
 
             $this->load->view('seleccion_metodo_view', ["key" => $key, "tiposPago" => $tiposPago]);
         }
@@ -74,26 +74,25 @@ class DpCard_controller extends MY_Controller {
             $row = $this->DpCard_model->getInfo($token);
 
             if($row != 'error'){
-                $hostvalido = $row[0]->hostvalido;
+                $hostvalido = $row->hostvalido;
 
-            /*valido host*/
-            $server = $_SERVER['SERVER_NAME'];
-            if(!$server == $hostvalido){
-                $this->session->set_flashdata('mensaje','Servidor No valido, favor de revisar su autorización o Id de Cliente.<br> Error: A002');
-                redirect("https://cajapagos.grupodp.com.mx/dpcard/DpCard_controller/error");
-                echo "Servidor $server No valido, favor de revisar su autorización o Id de Cliente.<br> Error: A002 ";
-            }
+                /*valido host*/
+                $server = $_SERVER['SERVER_NAME'];
+                if(!$server == $hostvalido){
+                    $this->session->set_flashdata('mensaje','Servidor No valido, favor de revisar su autorización o Id de Cliente.<br> Error: A002');
+                    redirect("https://cajapagos.grupodp.com.mx/dpcard/DpCard_controller/error");
+                    echo "Servidor $server No valido, favor de revisar su autorización o Id de Cliente.<br> Error: A002 ";
+                }
 
-            $data['monto'] = $monto;
-            $data['tienda'] = $row[0]->tienda_dpcredito;
-            $data['validacion'] = $arreglo[0];
-            $data['hash'] = $this->hash;
-            $data['ordenid'] = ($orden == 0 || $orden == '')?'N/A':$orden;
-            $data['key'] = $key;
-            //$this->setSession('amount', $monto);
-            //$this->setSession('idbranch', $row[0]->tienda_dpcredito);
-            //$this->setSession('orderId', $orden);
-
+                $data['validacion'] = $arreglo[0];
+                $data['hash'] = $this->hash;
+                $data['ordenid'] = ($orden == 0 || $orden == '')?'N/A':$orden;
+                $data['key'] = $key;
+                $data['monto'] = $monto;
+                $this->setSession('amount', $monto);
+                $this->setSession('idbranch', $row->tienda_dpcredito);
+                $this->setSession('orderId', $orden);
+                $this->setSession('idcustomer', $row->idcliente);
             }else{
                 $this->session->set_flashdata('mensaje','Informacion no Valida, Favor de revisar su autorización o Id de Cliente.<br> Error: A003 ');
                 redirect("https://cajapagos.grupodp.com.mx/dpcard/DpCard_controller/error");
@@ -107,52 +106,29 @@ class DpCard_controller extends MY_Controller {
         }
     }
 
-    public function validar_codesms()
-    {
-        $result = array( "status"=>false, "message"=>"El código ingresado es incorrecto, intentelo de nuevo", "result"=>[] );
-
-        $code = $this->input->get("code");
-        $userCode = md5($this->input->get("userCode"));
-        $amount = $this->input->get("monto");
-        $storeCode = $this->input->get("tienda");
-        //$codeSmsSaved = $this->getSession('codeSms');
-        //$amount = $this->getSession('amount');
-        //$tienda = $this->getSession('idbranch');
-
-        if($code == $userCode)
-        {
-            $result["status"] = true;
-            $result["message"] = "Correcto.";
-            //$result["result"]["cliente"] = $this->getSession('cliente');
-            $result["result"] = $this->DpCard_model->getPromociones($storeCode, $amount);
-        }
-
-        echo json_encode($result);
-    }
-
     public function validate_dpcard()
     {
+        if($this->validaToken()){}
+
         $result = array( "status"=>false, "message"=>"", "result"=>[] );
 
         try
         {
-            $dpcard = $this->input->get("dpcard");
-            $amount = $this->input->get("monto");
-            $storeCode = $this->input->get("tienda");
-            //$amount = $this->getSession('amount');
-            //$storeCode = $this->getSession('idbranch');
+            $dpcard = $this->decrypt(json_decode(base64_decode($this->input->get("dpcard"))), $this->hash);
+            $amount = $this->getSession('amount');
+            $storeCode = $this->getSession('idbranch');
 
             if( !is_numeric($dpcard) || strlen($dpcard) != 16 )
             {
                 throw new Exception("Atención, los datos enviados no son correctos, favor de revisarlos.", 1);
             }
 
-            $validateDpCardResult = $this->DpCard_model->validate_dpcard(["cardNumber" => $dpcard], $amount);
+            $validateDpCardResult = $this->DpCard_model->validate_dpcard($this->hash, ["cardNumber" => $dpcard], $amount);
 
             if($validateDpCardResult["status"])
             {
                 /*GENERAR SOLICITUD DE COMPRA Y ENVIAR SMS*/
-                $solicitudCompraResult = $this->DpCard_model->generarSolicitudCompra([
+                $solicitudCompraResult = $this->DpCard_model->generarSolicitudCompra($this->hash, [
                     "idCredit" => "",
                     "cardNumber" => $dpcard,
                     "amount" => "0",
@@ -163,17 +139,15 @@ class DpCard_controller extends MY_Controller {
                     "codeSms" => "",
                 ]);
 
+                //$solicitudCompraResult = ["status" => true, "message" => "Correcto.", "result" => ["codeSms" => "1234", "cliente" => "FRANCISCO ROMERO PEREZ"] ];
+
                 if($solicitudCompraResult["status"])
                 {
-                    //$this->setSession('codeSms', $solicitudCompraResult["result"]["codeSms"]);
-                    //$this->setSession('cliente', $validateDpCardResult["result"]["cliente"]);
+                    $this->setSession('codeSms', $solicitudCompraResult["result"]["codeSms"]);
+                    $this->setSession('customer', $validateDpCardResult["result"]["cliente"]);
 
                     $result["status"] = true;
                     $result["message"] = "Correcto.";
-                    $result["result"] = [
-                        "code" => md5($solicitudCompraResult["result"]["codeSms"]),
-                        "cliente" => $validateDpCardResult["result"]["cliente"]
-                    ];
                 }
                 else
                 {
@@ -194,20 +168,47 @@ class DpCard_controller extends MY_Controller {
         echo json_encode($result);
     }
 
+    public function validar_codesms()
+    {
+        if($this->validaToken()){}
+
+        $result = array( "status"=>false, "message"=>"El código ingresado es incorrecto, intentelo de nuevo", "result"=>[] );
+
+        $code = $this->input->get("userCode");
+        
+        $codeSmsSaved = $this->getSession('codeSms');
+        $amount = $this->getSession('amount');
+        $storeCode = $this->getSession('idbranch');
+        $customer = $this->getSession('customer');
+
+        if($code == $codeSmsSaved)
+        {
+            $result["status"] = true;
+            $result["message"] = "Correcto.";
+            $result["result"]["customer"] = $customer;
+            $result["result"]["promotions"] = $this->DpCard_model->getPromociones($storeCode, $amount);
+        }
+
+        echo json_encode($result);
+    }
+
     public function confirmar_compra()
     {
+        if($this->validaToken()){}
+
         $result = array( "status"=>false, "message"=>"", "result"=>[] );
 
         try
         {
-            $dpcard = $this->input->get("dpcard");
+            $dpcard = $this->decrypt(json_decode(base64_decode($this->input->get("dpcard"))), $this->hash);
             $promocion = $this->input->get("promocion");
-            $amount = $this->input->get("monto");
-            $codeSms = $this->input->get("code");
-            $storeCode = $this->input->get("tienda");
-            //$amount = $this->getSession('amount');
-            //$codeSms = $this->getSession('codeSms');
-            //$tienda = $this->getSession('idbranch');
+            $promocionDesc = $this->input->get("promocionDesc");
+            
+            $amount = $this->getSession('amount');
+            $codeSms = $this->getSession('codeSms');
+            $storeCode = $this->getSession('idbranch');
+            $orderId = $this->getSession('orderId');
+            $customer = $this->getSession('customer');
 
             if( !is_numeric($dpcard) || strlen($dpcard) != 16 || empty($promocion) || empty($codeSms) || empty($amount) )
             {
@@ -215,7 +216,7 @@ class DpCard_controller extends MY_Controller {
             }
 
             /*CONFIRMAR SOLICITUD DE COMPRA*/
-            $result = $this->DpCard_model->confirmar_compra([
+            $result = $this->DpCard_model->confirmar_compra($this->hash, $orderId, [
                 "idCredit" => "",
                 "cardNumber" => $dpcard,
                 "amount" => $amount,
@@ -224,6 +225,61 @@ class DpCard_controller extends MY_Controller {
                 "codePromotion" => $promocion,
                 "sendSms" => false,
                 "codeSms" => $codeSms
+            ]);
+
+            if($result["status"] === true)
+            {
+                $result = array(
+                    "status" => true,
+                    "mensaje" => "Venta almacenada",
+                    "ca" => $result["result"]["codigo_autorizacion"],
+                    "no_tarjeta" => $dpcard,
+                    "ventaTicket" => array(
+                        "cliente" => $customer,
+                        "valorPromocion" => $promocion,
+                        "descripcion" => $promocionDesc,
+                        "monto" => $amount
+                    )
+                );
+
+                $this->DpCard_model->guardar_info_compra($result, $storeCode, $orderId);
+
+                $result["no_tarjeta"] = "";
+            }
+        }
+        catch (\Throwable $th)
+        {
+            $result["status"] = false;
+            $result["message"] = $th->getMessage();
+        }
+
+        echo json_encode($result);
+    }
+
+    public function guardar_motivo_cancelacion()
+    {
+        if($this->validaToken()){}
+
+        $result = array( "status"=>false, "message"=>"", "result"=>[] );
+
+        try
+        {
+            $motivo = $this->input->get("motivo");
+            
+            $orderId = $this->getSession('orderId');
+            $idcustomer = $this->getSession('idcustomer');
+
+            
+
+            if( empty($idcustomer) || empty($motivo) )
+            {
+                throw new Exception("Atención, los datos enviados no son correctos, favor de revisarlos.", 1);
+            }
+
+            $result = $this->DpCard_model->guardar_motivo_cancelacion([
+                "idCliente" => $idcustomer,
+                "numeroOrden" => (empty($orderId) ? 0 : $orderId),
+                "motivo" => $motivo
             ]);
         }
         catch (\Throwable $th)
@@ -237,7 +293,7 @@ class DpCard_controller extends MY_Controller {
 
     private function setSession($name, $value){
         if($this->agent->mobile() == 'Apple iPhone' || $this->agent->browser() == 'Safari' || $this->agent->browser() == 'Chrome'){
-            $this->Dpvalecom_model->saveDBSession($this->hash, $name, $value);
+            $this->DpCard_model->saveDBSession($this->hash, $name, $value);
         }else{
             $this->session->set_userdata($name, $value);
         }
@@ -245,7 +301,7 @@ class DpCard_controller extends MY_Controller {
   
     private function getSession($name){
         if($this->agent->mobile() == 'Apple iPhone' || $this->agent->browser() == 'Safari' || $this->agent->browser() == 'Chrome'){
-            $row = $this->Dpvalecom_model->getDBSession($this->hash, $name);
+            $row = $this->DpCard_model->getDBSession($this->hash, $name);
             $valor = !empty($row) ? $row[0]->valor : '';
         } else {
             $valor = $this->session->userdata($name);
@@ -264,6 +320,25 @@ class DpCard_controller extends MY_Controller {
             die(json_encode($datos));
         }
         return false;
+    }
+
+    public function decrypt($jsonStr, $passphrase)
+    {
+        $json = json_decode($jsonStr, true);
+        $salt = hex2bin($json["s"]);
+        $iv = hex2bin($json["iv"]);
+        $ct = base64_decode($json["ct"]);
+        $concatedPassphrase = $passphrase . $salt;
+        $md5 = [];
+        $md5[0] = md5($concatedPassphrase, true);
+        $result = $md5[0];
+        for ($i = 1; $i < 3; $i++) {
+            $md5[$i] = md5($md5[$i - 1] . $concatedPassphrase, true);
+            $result .= $md5[$i];
+        }
+        $key = substr($result, 0, 32);
+        $data = openssl_decrypt($ct, 'aes-256-cbc', $key, true, $iv);
+        return json_decode($data, true);
     }
 }
 ?>
