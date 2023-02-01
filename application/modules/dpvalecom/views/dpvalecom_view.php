@@ -240,7 +240,7 @@
                       <label class="input-group-text" for="inputGroupSelect01">Promociones</label>
                     </div>
                     <select class="custom-select" id="dpvale_promociones">
-                      <option value="" selected>..::Seleccione quincenas a pagar::...</option>
+                      <option selected>..::Seleccione quincenas a pagar::...</option>
                     </select>
                   </div>
                   <label class='mensaje' id="lblFechaInicio"></label>
@@ -486,11 +486,6 @@ $(function() {
 
 function capturarBeneficiario()
 {
-    const select = $("#dpvale_promociones option:selected").val();;
-    if(select.value == ''){
-      mensaje('Error','Por favor, seleccione promoción');
-      return false;
-    }
   cargaParentescos();
   $("#myModal-beneficiario").modal('show');
 }
