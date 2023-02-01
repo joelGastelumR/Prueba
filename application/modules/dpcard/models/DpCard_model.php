@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class DpCard_model extends CI_Model {
 
     private $url = [
-        "consultaSaldo" => "http://aceqa.grupodp.com.mx:7082/dpcredito_api/consultaSaldo",
-        "compra" => "http://aceqa.grupodp.com.mx:7082/dpcredito_api/compra",
+        "consultaSaldo" => "http://10.200.3.102:7082/dpcredito_api/consultaSaldo",
+        "compra" => "http://10.200.3.102:7082/dpcredito_api/compra",
     ];
 
     public function __construct()
