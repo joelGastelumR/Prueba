@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-    
+
     <style>
         .main-logo {
             width: 65%;
@@ -251,7 +251,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row mb-3">
                         <div class="col-md-12 text-right">
                             <button type="button" class="btn btn-danger" id="modalCancelacion_btnCancelar">CONFIRMAR CANCELACIÓN</button>
@@ -278,7 +278,7 @@
             $("#txtDpCard").keypress(function (e) {
                 var charCode = (e.which) ? e.which : event.keyCode;
 
-                if (String.fromCharCode(charCode).match(/[^0-9]/g))    
+                if (String.fromCharCode(charCode).match(/[^0-9]/g))
                     return false;
             });
 
@@ -287,12 +287,13 @@
             });
 
             $("#btnFinalizarCompra").click(function(){
-                parent.postMessage('cerrar',"*");
+                dprespuesta=window.dpcard;
+                parent.postMessage(dprespuesta,"*");
             });
 
             $("#modalCancelacion_btnCancelar").click(function(){
                 var motivo = $("#modalCancelacion_selMotivo").val();
-                
+
                 if(motivo == ""){
                     mensaje("alerta", "Necesita seleccionar un motivo de cancelación.", function(){
                         setTimeout(() => {
@@ -301,7 +302,7 @@
                     });
                     return;
                 }
-                
+
                 motivo = (motivo == "Otro") ? $("#modalCancelacion_txtOtro").val() : motivo;
 
                 ajax("<?php echo base_url('dpcard/DpCard_controller/guardar_motivo_cancelacion'); ?>", {
@@ -353,6 +354,7 @@
                         $("#modalCompraCorrecta").modal("show");
                     }
                     response.no_tarjeta = $("#txtDpCard").val();
+                    window.dpcard=response;
                     console.log(response);
                 });
             });
@@ -402,9 +404,9 @@
                         }, 200);
                     });
                 }
-                
+
             });
-        
+
         });
 
 
