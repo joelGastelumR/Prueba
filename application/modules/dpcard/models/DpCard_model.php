@@ -157,7 +157,7 @@ class DpCard_model extends CI_Model {
         $result = array();
         try
         {
-            $result = $this->db->query("SELECT valor, descripcion FROM dpcard_promociones WHERE estado = '1' AND deleted_at IS NULL AND tienda_dpcredito = '$storeCode' AND CAST(montomin AS DECIMAL(12,2)) < CAST('$amount' AS DECIMAL(12,2)) AND CAST(montomax AS DECIMAL(12,2)) > CAST('$amount' AS DECIMAL(12,2))")->result_array();
+            $result = $this->db->query("SELECT valor, descripcion FROM dpcard_promociones WHERE estado = '1' AND deleted_at IS NULL AND tienda_dpcredito = '$storeCode' AND CAST(montomin AS DECIMAL(12,2)) <= CAST('$amount' AS DECIMAL(12,2)) AND CAST(montomax AS DECIMAL(12,2)) >= CAST('$amount' AS DECIMAL(12,2))")->result_array();
         }
         catch (\Throwable $th) {
         }
