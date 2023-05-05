@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class DpCard_model extends CI_Model {
 
     private $url = [
-        "consultaSaldo" => "http://10.200.3.102:7082/dpcredito_api/consultaSaldo",
-        "compra" => "http://10.200.3.102:7082/dpcredito_api/compra",
+        "consultaSaldo" => "http://10.200.5.89:7082/dpcredito_api/consultaSaldo",
+        "compra" => "http://10.200.5.89:7082/dpcredito_api/compra",
     ];
 
     public function __construct()
@@ -24,7 +24,7 @@ class DpCard_model extends CI_Model {
             $response = $this->webservices->REST($request, $this->url["consultaSaldo"], 'POST');
 
             $this->setTrackingWs($token, 'validate_dpcard', $request["cardNumber"], $request, $response);
-        
+
             if($response["response"]->status == 0 && empty($response["response"]->errors))
             {
                 throw new Exception("Crédito no encontrado, favor de ingresarlo nuevamente.", 1);
@@ -65,7 +65,7 @@ class DpCard_model extends CI_Model {
             $response = $this->webservices->REST($request, $this->url["compra"], 'POST');
 
             $this->setTrackingWs($token, 'generarSolicitudCompra', $request["cardNumber"], $request, $response);
-        
+
             if($response["response"]->status == 1)
             {
                 $result["status"] = true;
@@ -157,7 +157,7 @@ class DpCard_model extends CI_Model {
         $result = array();
         try
         {
-            $result = $this->db->query("SELECT valor, descripcion FROM dpcard_promociones WHERE estado = '1' AND deleted_at IS NULL AND tienda_dpcredito = '$storeCode' AND CAST(montomin AS DECIMAL(12,2)) < CAST('$amount' AS DECIMAL(12,2))")->result_array();
+            $result = $this->db->query("SELECT valor, descripcion FROM dpcard_promociones WHERE estado = '1' AND deleted_at IS NULL AND tienda_dpcredito = '$storeCode' AND CAST(montomin AS DECIMAL(12,2)) <= CAST('$amount' AS DECIMAL(12,2)) AND CAST(montomax AS DECIMAL(12,2)) >= CAST('$amount' AS DECIMAL(12,2))")->result_array();
         }
         catch (\Throwable $th) {
         }
@@ -182,7 +182,7 @@ class DpCard_model extends CI_Model {
         try
         {
             $datos["no_tarjeta"] = openssl_encrypt($datos["no_tarjeta"], "AES-128-CTR", $this->config->item('CRYPT_KEY'), 0, $this->config->item('CRYPT_IV'));
-            
+
             $this->db->insert('log_tracking', array(
                 'tienda' => $codeStore,
                 'metodo' => 'resultVenta',
@@ -246,7 +246,7 @@ class DpCard_model extends CI_Model {
         try
         {
             $datos["folio"] = openssl_encrypt($datos["folio"], "AES-128-CTR", $this->config->item('CRYPT_KEY'), 0, $this->config->item('CRYPT_IV'));
-        
+
             if(!empty($datos["request"]))
             {
                 if(!empty($datos["request"]["cardNumber"]))
@@ -256,7 +256,7 @@ class DpCard_model extends CI_Model {
 
                 $datos["request"] = json_encode($datos["request"], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             }
-            
+
             $this->db->insert('log_tracking', $datos);
         }
         catch (\Throwable $th) {
