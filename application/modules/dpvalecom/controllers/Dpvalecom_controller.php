@@ -319,8 +319,7 @@ class Dpvalecom_controller extends MY_Controller {
 
              /*ENVIAR SMS*/
              $sms = $this->Dpvalecom_model->enviarSMS($idCustomer,$folio,$this->hash);
-             print_r($sms);
-             die();
+
              if($sms['code'] == "A05"){
                    $response = ["status"=>'ok', "message"=>$sms['message']];
                    die(json_encode($response));
