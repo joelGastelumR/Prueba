@@ -487,8 +487,8 @@ $(function() {
 function capturarBeneficiario()
 {
     const select = $("#dpvale_promociones option:selected").val();
-    if(select.value == ''){
-      mensaje('Error','Por favor, seleccione promoción');
+    if(select == ''){
+      mensaje('alerta','Por favor, seleccione una promoción para continuar');
       return false;
     }
   cargaParentescos();
@@ -1029,7 +1029,7 @@ function mensaje(tipo, mensaje,callback = ''){
       break;
     case 'alerta':
         $.confirm({
-          title: 'Alerta',
+          title: '¡Alerta!',
           content: mensaje,
           type: 'orange',
           typeAnimated: true,
