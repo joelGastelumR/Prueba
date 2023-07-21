@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Club dp</title>
+    <title>DPCard</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
@@ -65,7 +65,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <p class="mensaje_pago"><b>Monto a pagar con tarjeta Club dp: $<?=number_format($monto,2,'.',',')?></b></p>
+                <p class="mensaje_pago"><b>Monto a pagar con tarjeta dpcard: $<?=number_format($monto,2,'.',',')?></b></p>
             </div>
         </div>
         <div class="row mb-3">
@@ -135,7 +135,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-auto" style="margin: 0 auto;">
-                    <span class="text-muted">Pago clubdp-ecommerce &copy; <?php echo date("Y"); ?></span>
+                    <span class="text-muted">Pago dpcard-ecommerce &copy; <?php echo date("Y"); ?></span>
                 </div>
             </div>
         </div>
