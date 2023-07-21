@@ -690,6 +690,7 @@ function validaToken(){
 }
 
 function setPago(){
+  
 const select = $("#dpvale_promociones option:selected");
   if(select.folio == ''){
     mensaje('Error','Por favor, seleccione promoción');
@@ -720,7 +721,7 @@ const select = $("#dpvale_promociones option:selected");
                $.blockUI({ message: '<h2>Canjeando dpvale.. <small>por favor espere un momento</small></h2>',timeout: 60000,baseZ: 9000 });
           },
           success:function(data) {
-            // console.log(data);
+             //console.log(data);
             if(data.status == 'error'){mensaje('Error',data.message);return false;}
             if(data.status == 'ok'){
               window.canje=data;
