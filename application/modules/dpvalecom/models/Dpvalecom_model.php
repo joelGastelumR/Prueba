@@ -78,11 +78,7 @@ class Dpvalecom_model extends CI_Model {
       $foundTel=true;
     }else{
       /*BUSQUEDA POR FOLIO DEL VALE EN S2CREDIT*/
-<<<<<<< HEAD
       //20230811 IR: SE REQUIERE CAMBIAR LA BUSQUEDA DEL CEL DE s2dp A POSTGREES
-=======
-      //20230811 IR: SE REQUIERE CAMBIAR LA BUSQUEDA DEL CEL DE s2dp A POSTGRESQL
->>>>>>> 706626292027af56d0b604a66beff6c1d684bcd3
       //$row = $this->db2->query("SELECT customer_phone_number as cell_phone FROM s2credit_ecoupons WHERE reference_number_encode ='$folio' ")->result();
       $row = $this->pstgr->query("SELECT cell_phone as cell_phone FROM voucher where voucher_id = '$folio'")->result();
       if($row)
