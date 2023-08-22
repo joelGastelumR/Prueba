@@ -13,11 +13,11 @@ class Dpvalecom_model extends CI_Model {
     //$this->db2 = $this->load->database('postgres',true);
     $this->db2 = $this->load->database('s2credit',true);
     $this->db3 = $this->load->database('default',true);
+    $this->pstgr = $this->load->database('postgres',true);
     $this->numero_intentos=5;
     $this->numero_reenvios=5;
     $this->tiempo_espera_intentos=10; //son minutos
     $this->tiempo_espera_reenvios=1440; // son minutos
-
 
   }
 
@@ -77,10 +77,14 @@ class Dpvalecom_model extends CI_Model {
       $tel = $row[0]->cell_phone;
       $foundTel=true;
     }else{
-    /*BUSQUEDA POR FOLIO DEL VALE EN S2CREDIT*/
-    $row = $this->db2->query("SELECT customer_phone_number as cell_phone FROM s2credit_ecoupons WHERE reference_number_encode ='$folio' ")->result();
-    if($row){$tel = $row[0]->cell_phone;$foundTel=true;}
-
+      /*BUSQUEDA POR FOLIO DEL VALE EN S2CREDIT*/
+      //20230811 IR: SE REQUIERE CAMBIAR LA BUSQUEDA DEL CEL DE s2dp A POSTGREES
+      //$row = $this->db2->query("SELECT customer_phone_number as cell_phone FROM s2credit_ecoupons WHERE reference_number_encode ='$folio' ")->result();
+      $row = $this->pstgr->query("SELECT cell_phone as cell_phone FROM voucher where voucher_id = '$folio'")->result();
+      if($row)
+      {
+        $tel = $row[0]->cell_phone;$foundTel=true;
+      }
 
     }
   if($foundTel){
@@ -107,7 +111,7 @@ class Dpvalecom_model extends CI_Model {
         //OLD BUS
         // $sms_url = "http://10.200.3.102:7082/sms/api/EnviarSMS";
        }else{
-        $sms_url = "http://10.200.3.103:7082/sms/api/EnviarSMS";
+        $sms_url = "http://brokerace.grupodp.com.mx:7082/sms/api/EnviarSMS";
        }
 
        //cambios sms
@@ -218,7 +222,7 @@ class Dpvalecom_model extends CI_Model {
         //OLD BUS
         // $sms_url = "http://10.200.3.102:7082/sms/api/EnviarSMS";
        }else{
-        $sms_url = "http://10.200.3.103:7082/sms/api/EnviarSMS";
+        $sms_url = "http://brokerace.grupodp.com.mx:7082/sms/api/EnviarSMS";
        }
 
        //cambios sms
