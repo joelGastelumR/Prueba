@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+date_default_timezone_set('America/Mazatlan');
 class Dpvalecom_controller extends MY_Controller {
 
 
@@ -24,6 +24,10 @@ class Dpvalecom_controller extends MY_Controller {
       $this->path_pdf= "/var/www/caja/assets/polizas/pdf/"; // RUTAS PRD
       $this->plantilla_poliza = '/var/www/caja/assets/templetes/dpvale_seguro_ecommerce.html'; // RUTAS PRD
     }
+    $this->path_firmas = "/assets/polizas/firma/"; // RUTAS PRD
+    $this->path_pdf= "/assets/polizas/pdf/"; // RUTAS PRD
+    $this->plantilla_poliza = '/assets/templetes/dpvale_seguro_ecommerce.html'; // RUTAS PRD
+
     //die($this->plantilla_poliza);
      // $this->path_firmas = "/var/www/caja/assets/polizas/firma/"; // RUTAS PRD
      // $this->path_pdf= "/var/www/caja/assets/polizas/pdf/"; // RUTAS PRD
