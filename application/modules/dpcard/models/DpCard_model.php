@@ -3,16 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class DpCard_model extends CI_Model {
 
-    if(ENVIRONMENT=="development"){
-        echo "HOLA ES UNA PRUEBA";
-    }else{
-        echo "HOLA ES UNA PRUEBA prd";
-    }
-
     private $url = [
 
-        "consultaSaldo" => "http://aceqa.grupodp.com.mx:7082/dpcredito_api/consultaSaldo",
-        "compra" => "http://aceqa.grupodp.com.mx:7082/dpcredito_api/compra",
+        "consultaSaldo" => "http://brokerace.grupodp.com.mx:7082/dpcredito_api/consultaSaldo",
+        "compra" => "http://brokerace.grupodp.com.mx:7082/dpcredito_api/compra",
 
     ];
 
