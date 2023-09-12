@@ -5,8 +5,8 @@ class DpCard_model extends CI_Model {
 
     private $url = [
 
-        "consultaSaldo" => "http://brokerace.grupodp.com.mx:7082/dpcredito_api/consultaSaldo",
-        "compra" => "http://brokerace.grupodp.com.mx:7082/dpcredito_api/compra",
+        "consultaSaldo" => "http://aceqa.grupodp.com.mx:7082/dpcredito_api/consultaSaldo",
+        "compra" => "http://aceqa.grupodp.com.mx:7082/dpcredito_api/compra",
 
     ];
 
