@@ -20,6 +20,10 @@ class DpCard_controller extends MY_Controller {
                 $this->hash = $this->input->get('itoken');
             }
         }
+
+        $this->config->load_db_items();
+        $this->consultaSaldo = $this->config->item('WS_consultaSaldo');
+        $this->compra = $this->config->item('WS_compra');
     }
 
     public function index()
@@ -98,6 +102,9 @@ class DpCard_controller extends MY_Controller {
                 redirect("https://cajapagos.grupodp.com.mx/dpcard/DpCard_controller/error");
                 echo "Informacion no Valida, Favor de revisar su autorización o Id de Cliente.<br> Error: A003";
             }
+            
+            $data['consultaSaldo']=$this->consultaSaldo;
+            $data['compra']=$this->compra;
 
         	$this->load->view('dpcard_index_view', $data);
         }else{

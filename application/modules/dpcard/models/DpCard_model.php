@@ -3,18 +3,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class DpCard_model extends CI_Model {
 
-    private $url = [
+    // private $url = [
 
-        "consultaSaldo" => "http://aceqa.grupodp.com.mx:7082/dpcredito_api/consultaSaldo",
-        "compra" => "http://aceqa.grupodp.com.mx:7082/dpcredito_api/compra",
+    //     "consultaSaldo" => "http://aceqa.grupodp.com.mx:7082/dpcredito_api/consultaSaldo",
+    //     "compra" => "http://aceqa.grupodp.com.mx:7082/dpcredito_api/compra",
 
-    ];
+    // ];
 
     public function __construct()
     {
         parent::__construct();
         $this->config->load_db_items();
         $this->load->library('webservices');
+        $this->consultaSaldo = $this->config->item('WS_consultaSaldo');
+        $this->compra = $this->config->item('WS_compra');
     }
 
     public function validate_dpcard($token, $request, $amount)
@@ -23,7 +25,8 @@ class DpCard_model extends CI_Model {
 
         try
         {
-            $response = $this->webservices->REST($request, $this->url["consultaSaldo"], 'POST');
+            $response = $this->webservices->REST($request, $this->consultaSaldo, 'POST');
+            // $response = $this->webservices->REST($request, $this->url["consultaSaldo"], 'POST');
 
             $this->setTrackingWs($token, 'validate_dpcard', $request["cardNumber"], $request, $response);
 
@@ -64,7 +67,8 @@ class DpCard_model extends CI_Model {
 
         try
         {
-            $response = $this->webservices->REST($request, $this->url["compra"], 'POST');
+            $response = $this->webservices->REST($request, $this->compra, 'POST');
+            // $response = $this->webservices->REST($request, $this->url["compra"], 'POST');
 
             $this->setTrackingWs($token, 'generarSolicitudCompra', $request["cardNumber"], $request, $response);
 
@@ -112,7 +116,8 @@ class DpCard_model extends CI_Model {
             );
             $this->setTracking($track);
 
-            $response = $this->webservices->REST($request, $this->url["compra"], 'POST');
+            $response = $this->webservices->REST($request, $this->compra, 'POST');
+            // $response = $this->webservices->REST($request, $this->url["compra"], 'POST');
 
             $this->setTrackingWs($token, 'confirmar_compra', $request["cardNumber"], $request, $response);
 

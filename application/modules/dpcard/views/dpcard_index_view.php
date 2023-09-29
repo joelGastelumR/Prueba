@@ -61,6 +61,9 @@
 /*            margin-top: -50px;*/
             font-weight: bold;
         }
+        button#btnServicios {
+            margin-bottom: 20px
+        }
     </style>
 </head>
 <body>
@@ -69,7 +72,7 @@
             echo "<span class='letreroQAS'>QAS</span>";
        }
      ?>
-    <div class="container-fluid">
+    <div class="container-fluid" style="overflow-wrap: anywhere;">
         <div class="row">
             <div class="col-md-12 text-center">
                 <img class="main-logo" src="<?= base_url('/assets/imgs/dpcard.jpg') ?>">
@@ -141,6 +144,18 @@
                 <button class="btn btn-danger float-right mr-3" id="btnCancelar">Cancelar</button>
             </div>
         </div>
+        <?php  if(ENVIRONMENT=="development"){ ?>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div id="txtServicios">
+                    <p style="margin: 0;"><strong>consultaSaldo:</strong> <?= $consultaSaldo?></p>
+                    <p><strong>compra:</strong> <?= $compra?></p>
+                </div>
+                <button class="btn btn-secondary float-left" id="btnServicios">Servicios</button>
+            </div>
+        </div>
+        <?php } ?>
+
     </div>
 
     <footer class="footer fixed-bottom" style="height: 25px !important">
@@ -549,6 +564,12 @@
                 });
             });
         }
+        $("#txtServicios").hide();
+
+        $("#btnServicios").click(function(){
+            $("#txtServicios").toggle();
+
+        });
     </script>
 </body>
 </html>
