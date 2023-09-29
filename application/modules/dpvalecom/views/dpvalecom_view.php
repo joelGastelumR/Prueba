@@ -176,6 +176,9 @@
 /*            margin-top: -50px;*/
             font-weight: bold;
         }
+        button#btnServicios {
+            margin-bottom: 20px
+        }
     </style>
     <title>DPVALE ECOMMERCES</title>
   </head>
@@ -276,6 +279,18 @@
                   </div>
                   </div>
                 </div>
+
+                 <?php  if(ENVIRONMENT=="development"){ ?>
+                  <div class="row mb-3">
+                      <div class="col-md-12">
+                          <div id="txtServicios">
+                              <p style="margin: 0;"><strong>s2credit:</strong> <?= $url_ws_s2credit?></p>
+                              <p><strong>EnviarSMS:</strong> <?= $url_ws_EnviarSMS?></p>
+                          </div>
+                          <button class="btn btn-secondary float-left" id="btnServicios">Servicios</button>
+                      </div>
+                  </div>
+                  <?php } ?>
               </div>
               <!-- FIN Monto y boton de pagar-->
 
@@ -1099,6 +1114,12 @@ function cerrarModal(){
   parent.postMessage('cerrar',"*");
 }
 
+  $("#txtServicios").hide();
+
+  $("#btnServicios").click(function(){
+      $("#txtServicios").toggle();
+
+  });
 /* SEGURIDAD VALIDACION DE URL y HOST */
 //if(parent.document.dpvaleiframe === undefined){
   //document.location = 'http://10.200.3.35/dpapi/dpvalecom/error';

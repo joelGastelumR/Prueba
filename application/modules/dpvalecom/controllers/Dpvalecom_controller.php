@@ -40,6 +40,9 @@ class Dpvalecom_controller extends MY_Controller {
           $this->hash = $this->input->get('itoken');
       }
     }
+    $this->load->library('webservices');
+    $this->url_ws_s2credit = $this->config->item('WS_s2credit');
+    $this->url_ws_EnviarSMS = $this->config->item('WS_EnviarSMS');
 }
 
 
@@ -96,6 +99,9 @@ class Dpvalecom_controller extends MY_Controller {
             redirect("https://cajapagos.grupodp.com.mx/dpvalecom/dpvalecom_controller/error");
             echo "Informacion no Valida, Favor de revisar su autorización o Id de Cliente.<br> Error: A003";
           }
+          
+          $data['url_ws_s2credit']=$this->url_ws_s2credit;
+          $data['url_ws_EnviarSMS']=$this->url_ws_EnviarSMS;
 
         	$this->load->view('dpvalecom_view', $data);
       }else{

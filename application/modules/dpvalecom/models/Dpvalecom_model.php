@@ -9,6 +9,7 @@ class Dpvalecom_model extends CI_Model {
     $this->load->library('webservices');
     // $this->url_ws_s2credit = "http://10.200.3.103:7082/pos/s2credit";
     $this->url_ws_s2credit = $this->config->item('WS_s2credit');
+    $this->url_ws_EnviarSMS = $this->config->item('WS_EnviarSMS');
     // echo $this->url_ws_s2credit;
     //$this->db2 = $this->load->database('postgres',true);
     $this->db2 = $this->load->database('s2credit',true);
@@ -103,16 +104,16 @@ class Dpvalecom_model extends CI_Model {
        /*$sms_url = $this->config->item('sms_url');
        $sms_account = $this->config->item('sms_user');
        $sms_password = $this->config->item('sms_pass');*/
-       if(ENVIRONMENT=="development"){
-         //NEW BUS
-        $sms_url = "http://aceqa.grupodp.com.mx:7084/sms/api/EnviarSMS";
-        // $sms_url = "http://aceqa.grupodp.com.mx:7085/sms/api/EnviarSMS";
+       // if(ENVIRONMENT=="development"){
+       //   //NEW BUS
+       //  $sms_url = "http://aceqa.grupodp.com.mx:7084/sms/api/EnviarSMS";
+       //  // $sms_url = "http://aceqa.grupodp.com.mx:7085/sms/api/EnviarSMS";
 
-        //OLD BUS
-        // $sms_url = "http://10.200.3.102:7082/sms/api/EnviarSMS";
-       }else{
-        $sms_url = "http://brokerace.grupodp.com.mx:7082/sms/api/EnviarSMS";
-       }
+       //  //OLD BUS
+       //  // $sms_url = "http://10.200.3.102:7082/sms/api/EnviarSMS";
+       // }else{
+       //  $sms_url = "http://brokerace.grupodp.com.mx:7082/sms/api/EnviarSMS";
+       // }
 
        //cambios sms
        //$sms_mensaje = "DP-$sms_token es tu código de verificación de Dpvale";
@@ -142,7 +143,8 @@ class Dpvalecom_model extends CI_Model {
             $data = ["status"=>true, "code" => "A04" , "message"=>'Mensaje SMS ya enviado al numero '.$hide_tel];
         }else{
           //envio el SMS
-          $raw = $this->webservices->REST($args, $sms_url, 'POST');
+          // $raw = $this->webservices->REST($args, $sms_url, 'POST');
+          $raw = $this->webservices->REST($args, $this->url_ws_EnviarSMS, 'POST');
           $this->setTrackingWs($token, 'enviarSMS', $folio, $row, $raw);
           $response = $raw['response'];
 
@@ -213,17 +215,17 @@ class Dpvalecom_model extends CI_Model {
        /*$sms_url = $this->config->item('sms_url');
        $sms_account = $this->config->item('sms_user');
        $sms_password = $this->config->item('sms_pass');*/
-       if(ENVIRONMENT=="development"){
-         //NEW BUS
-        $sms_url = "http://aceqa.grupodp.com.mx:7084/sms/api/EnviarSMS";
-        //$sms_url = "http://aceqa.grupodp.com.mx:7083/sms/api/EnviarSMS";
+       // if(ENVIRONMENT=="development"){
+       //   //NEW BUS
+       //  $sms_url = "http://aceqa.grupodp.com.mx:7084/sms/api/EnviarSMS";
+       //  //$sms_url = "http://aceqa.grupodp.com.mx:7083/sms/api/EnviarSMS";
 
-        // $sms_url = "http://aceqa.grupodp.com.mx:7085/sms/api/EnviarSMS";
-        //OLD BUS
-        // $sms_url = "http://10.200.3.102:7082/sms/api/EnviarSMS";
-       }else{
-        $sms_url = "http://brokerace.grupodp.com.mx:7082/sms/api/EnviarSMS";
-       }
+       //  // $sms_url = "http://aceqa.grupodp.com.mx:7085/sms/api/EnviarSMS";
+       //  //OLD BUS
+       //  // $sms_url = "http://10.200.3.102:7082/sms/api/EnviarSMS";
+       // }else{
+       //  $sms_url = "http://brokerace.grupodp.com.mx:7082/sms/api/EnviarSMS";
+       // }
 
        //cambios sms
        //$sms_mensaje = "DP-$sms_token es tu código de verificación de Dpvale";
@@ -248,7 +250,8 @@ class Dpvalecom_model extends CI_Model {
          ];
 
         //Reenviando el mensaje
-          $raw = $this->webservices->REST($args, $sms_url, 'POST');
+          $raw = $this->webservices->REST($args, $this->url_ws_EnviarSMS, 'POST');
+          // $raw = $this->webservices->REST($args, $sms_url, 'POST');
           $response = $raw['response'];
 
           if( $response == '' ){
