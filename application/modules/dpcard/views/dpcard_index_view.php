@@ -64,6 +64,13 @@
         button#btnServicios {
             margin-bottom: 20px
         }
+        div#txtServicios {
+            background: #cbcbcb;
+            border: 1px dotted #9d9d9d;
+            font-family: monospace;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>

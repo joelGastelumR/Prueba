@@ -176,9 +176,17 @@
 /*            margin-top: -50px;*/
             font-weight: bold;
         }
-        button#btnServicios {
-            margin-bottom: 20px
-        }
+      button#btnServicios {
+          margin-bottom: 20px
+      }
+      div#txtServicios {
+          background: #cbcbcb;
+          border: 1px dotted #9d9d9d;
+          font-family: monospace;
+          font-size: 13px;
+          margin-bottom: 10px;
+          margin-top: 30px;
+      }
     </style>
     <title>DPVALE ECOMMERCES</title>
   </head>
