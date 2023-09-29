@@ -177,7 +177,7 @@
             font-weight: bold;
         }
       button#btnServicios {
-          margin-bottom: 20px
+          margin-bottom: 20px;
       }
       div#txtServicios {
           background: #cbcbcb;
@@ -185,7 +185,7 @@
           font-family: monospace;
           font-size: 13px;
           margin-bottom: 10px;
-          margin-top: 30px;
+          margin-top: 10px;
       }
     </style>
     <title>DPVALE ECOMMERCES</title>
@@ -289,7 +289,7 @@
                 </div>
 
                  <?php  if(ENVIRONMENT=="development"){ ?>
-                  <div class="row mb-3">
+                  <div class="row mb-3" style="margin-top: 25px;">
                       <div class="col-md-12">
                           <div id="txtServicios">
                               <p style="margin: 0;"><strong>s2credit:</strong> <?= $url_ws_s2credit?></p>
