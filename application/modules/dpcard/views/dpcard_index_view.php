@@ -54,9 +54,21 @@
             width: 100%;
             -webkit-border-radius: 10px;
         }
+
+        span.letreroQAS {
+            color: red;
+            float: right;
+/*            margin-top: -50px;*/
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
+    <?php 
+        if(ENVIRONMENT=="development"){
+            echo "<span class='letreroQAS'>QAS</span>";
+       }
+     ?>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12 text-center">

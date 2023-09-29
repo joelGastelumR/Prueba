@@ -170,11 +170,22 @@
       div#myModal-poliza {
           overflow-y: auto;
       }
+      span.letreroQAS {
+            color: red;
+            float: right;
+/*            margin-top: -50px;*/
+            font-weight: bold;
+        }
     </style>
     <title>DPVALE ECOMMERCES</title>
   </head>
   <body>
     <div class="content-cajaP">
+      <?php 
+          if(ENVIRONMENT=="development"){
+              echo "<span class='letreroQAS'>QAS</span>";
+         }
+       ?>
       <div class="container-fluid">
           <div class="col-md-auto">
              <!--ENCABEZADO-->

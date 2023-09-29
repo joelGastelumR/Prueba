@@ -19,9 +19,21 @@
         #modal_loading .modal-dialog{
             width: 70% !important;
         }
+        span.letreroQAS {
+            color: red;
+            float: right;
+            margin-top: -50px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
+    <?php 
+        if(ENVIRONMENT=="development"){
+            echo "<span class='letreroQAS'>QAS</span>";
+       }
+     ?>
+    
     <div class="container-fluid">
         <div class="row mt-5">
             <div class="col-md-12">
