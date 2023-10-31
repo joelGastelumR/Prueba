@@ -192,6 +192,11 @@
           padding: 8px 20px;
           font-size: 17px;
       }
+      button#btn_success2 {
+          font-weight: bold;
+          padding: 8px 20px;
+          font-size: 17px;
+      }
       p#mensaje_finalizar {
           margin-top: 25px;
       }
@@ -513,7 +518,7 @@
 </html>
 <script>
 //alert("entro en 5.18");
-  $("#modalPoliza").modal('show');
+  // $("#modalPoliza").modal('show');
 //console.log("Navegador: "+bowser.name +" Version: "+ bowser.version);
 $.blockUI.defaults.css = {};
 $(function() {
