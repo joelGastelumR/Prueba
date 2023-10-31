@@ -372,21 +372,21 @@
           <div class="modal-content">
             <div class="modal-body">
               <div class="thank-you-pop">
-                  <img src="<?=base_url('/assets/imgs/Green-Round-Tick.png')?>" alt="">
+                  <!-- <img src="<?php //base_url('/assets/imgs/Green-Round-Tick.png')?>" alt=""> -->
                   <!-- <h1 id="mensaje_titulo">dpvale canjeado</h1> -->
-                  <h1 id="mensaje_titulo">Confirmando su compra</h1>
+                  <!-- <h1 id="mensaje_titulo">Confirmando su compra</h1> -->
                   <!-- <p id="mensaje_finalizar"></p> -->
-                  <p id="mensaje_finalizar"><strong>Para finalizar su compra, de clic en el siguiente botón: </strong></p>
-                  <button type="button" class="btn btn-success" data-dismiss="modal" id="btn_success" style="display: block; margin: 0 auto;">FINALIZAR COMPRA</button>
+                  <p id="mensaje_finalizar"><strong>Para continuar con su compra, de clic en el siguiente botón: </strong></p>
+                  <button type="button" class="btn btn-success" data-dismiss="modal" id="btn_success" style="display: block; margin: 0 auto;">Finalizar Compra</button>
                   <button type="button" class="btn btn-success invisible" data-dismiss="modal" id="btn_success2" style="display: block; margin: 0 auto;">FINALIZAR COMPRA</button>
 
                   <!-- <br> -->
                   <!-- <button type="button" class="btn btn-success invisible" data-dismiss="modal" id="btn_success2">FINALIZAR COMPRA</button><br><br> -->
                   <!-- <p id="mensaje_gracias"></p> -->
                   <p id="mensaje_gracias">Gracias por su compra, los recibos de compra serán enviados vía correo electrónico.</p>
-                  <h3 class="cupon-pop">Código autorización: <span id="lbl_ca"></span></h3>
+                  <h3 class="cupon-pop">Código de autorización: <span id="lbl_ca"></span></h3>
                   <!-- <br> -->
-                  <a id="link_descarga" class="invisible" style="margin-bottom:10px;" target="_blank" >Descargar Póliza de seguro</a><br>
+                  <!-- <a id="link_descarga" class="invisible" style="margin-bottom:10px;" target="_blank" >Descargar Póliza de seguro</a><br> -->
                   <!-- <button type="button" class="btn btn-success" data-dismiss="modal" id="btn_success"></button><br> -->
                   <!-- <button type="button" class="btn btn-info invisible" data-dismiss="modal" id="btn_success2">FINALIZAR COMPRA</button> -->
               </div>
@@ -505,7 +505,7 @@
 </html>
 <script>
 //alert("entro en 5.18");
-  // $("#myModal-poliza").modal('show');
+  // $("#modalPoliza").modal('show');
 //console.log("Navegador: "+bowser.name +" Version: "+ bowser.version);
 $.blockUI.defaults.css = {};
 $(function() {
@@ -804,7 +804,11 @@ $("#btn_success").click(function(){
 CLICK AL BOTON DE ACEPTAR DESPUES DE GENERRAR LA POLIZA
 */
 $("#btn_success2").click(function(){
-  const canje = window.canje;
+   var poliza = $("#btn_success2").data("url-poliza");
+   if (typeof poliza !== "undefined" && poliza !== null) {
+     window.open(poliza);
+   }
+    const canje = window.canje;
     enviarMensaje(2);
 });
 
@@ -932,14 +936,15 @@ function setventa(){
         if(data.status == 'error'){mensaje('Error',data.message);return false;}
         if(data.status == 'ok'){
           // setPago();
-          $("#mensaje_titulo").html('Confirmando su compra');
+          // $("#mensaje_titulo").html('Confirmando su compra');
           $("#mensaje_gracias").html('Gracias por su compra, los recibos de compra serán enviados vía correo electrónico.');
-          $("#mensaje_finalizar").html('<strong>Para finalizar su compra, de clic en el siguiente botón: </strong>');
+          $("#mensaje_finalizar").html('<strong>Para continuar con su compra, de clic en el siguiente botón: </strong>');
           $("#btn_success2").removeClass('invisible');
           $("#btn_success2").addClass('subir');
+          $("#btn_success2").attr("data-url-poliza", data.poliza);
           $("#btn_success").addClass('invisible');
           $("#myModal-poliza").modal('hide');
-          $("#link_descarga").removeClass('invisible').attr('href',data.poliza);
+          // $("#link_descarga").removeClass('invisible').attr('href',data.poliza);
           $('#modalPoliza').modal('show');
         }
      },
