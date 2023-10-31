@@ -780,7 +780,7 @@ const select = $("#dpvale_promociones option:selected");
                 msn_txt="Gracias por su compra, para su mayor protección tenemos una póliza de vida incluida en esta compra, para hacerla válida se requiere que nos proporcione los datos del beneficiario y su firma.";
 
               }else{
-                msn_btn="FINALIZAR COMPRA";
+                msn_btn="Finalizar Compra";
                 msn_txt="Gracias por su compra, los recibos de compra se le enviaran vía correo electrónico";
 
                 $("#myModal-poliza").modal('hide');
