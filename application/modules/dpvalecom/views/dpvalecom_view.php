@@ -377,8 +377,8 @@
                   <!-- <h1 id="mensaje_titulo">Confirmando su compra</h1> -->
                   <!-- <p id="mensaje_finalizar"></p> -->
                   <p id="mensaje_finalizar"><strong>Para continuar con su compra, de clic en el siguiente botón: </strong></p>
-                  <button type="button" class="btn btn-success" data-dismiss="modal" id="btn_success" style="display: block; margin: 0 auto;">Finalizar Compra</button>
-                  <button type="button" class="btn btn-success invisible" data-dismiss="modal" id="btn_success2" style="display: block; margin: 0 auto;">FINALIZAR COMPRA</button>
+                  <button type="button" class="btn btn-success" data-dismiss="modal" id="btn_success" style="display: block; margin: 0 auto; background-color: #2f89a7; border-color: #2f89a7;">Finalizar Compra</button>
+                  <button type="button" class="btn btn-success invisible" data-dismiss="modal" id="btn_success2" style="display: block;  margin: 0 auto; background-color: #2f89a7; border-color: #2f89a7;">Finalizar Compra</button>
 
                   <!-- <br> -->
                   <!-- <button type="button" class="btn btn-success invisible" data-dismiss="modal" id="btn_success2">FINALIZAR COMPRA</button><br><br> -->
@@ -505,7 +505,7 @@
 </html>
 <script>
 //alert("entro en 5.18");
-  // $("#modalPoliza").modal('show');
+  $("#modalPoliza").modal('show');
 //console.log("Navegador: "+bowser.name +" Version: "+ bowser.version);
 $.blockUI.defaults.css = {};
 $(function() {
