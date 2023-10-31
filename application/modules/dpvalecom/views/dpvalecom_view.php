@@ -187,6 +187,14 @@
           margin-bottom: 10px;
           margin-top: 10px;
       }
+      button#btn_success {
+          font-weight: bold;
+          padding: 8px 20px;
+          font-size: 17px;
+      }
+      p#mensaje_finalizar {
+          margin-top: 25px;
+      }
     </style>
     <title>DPVALE ECOMMERCES</title>
   </head>
