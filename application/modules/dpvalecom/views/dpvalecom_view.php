@@ -817,12 +817,14 @@ $("#btn_success").click(function(){
 CLICK AL BOTON DE ACEPTAR DESPUES DE GENERRAR LA POLIZA
 */
 $("#btn_success2").click(function(){
-   var poliza = $("#btn_success2").data("url-poliza");
+   
+    const canje = window.canje;
+    enviarMensaje(2);
+
+    var poliza = $("#btn_success2").data("url-poliza");
    if (typeof poliza !== "undefined" && poliza !== null) {
      window.open(poliza);
    }
-    const canje = window.canje;
-    enviarMensaje(2);
 });
 
 function cargaParentescos(){
