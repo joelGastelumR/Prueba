@@ -51,7 +51,7 @@ class Dpvalecom_model extends CI_Model {
   public function getPromociones($plaza,$monto,$token,$dpvale)
   {
       $json = array("offers"=>array("id_branch"=>$plaza,"amount"=>$monto,"date"=>date('Y-m-d')));
-      echo json_decode($json);
+      print_r($json);
       die();
       $data = $this->webservices->REST($json, $this->url_ws_s2credit, 'POST');
       $this->setTrackingWs($token, 'getPromociones', $dpvale, $json, $data);
