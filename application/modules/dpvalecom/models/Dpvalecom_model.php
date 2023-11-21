@@ -89,7 +89,7 @@ class Dpvalecom_model extends CI_Model {
         $tel = $row[0]->cell_phone;$foundTel=true;
       }
       echo $tel;
-      echo $foundTel;
+      echo var_dump($foundTel);
       die();
 
     }
