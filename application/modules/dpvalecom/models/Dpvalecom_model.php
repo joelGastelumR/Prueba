@@ -82,6 +82,8 @@ class Dpvalecom_model extends CI_Model {
       //20230811 IR: SE REQUIERE CAMBIAR LA BUSQUEDA DEL CEL DE s2dp A POSTGREES
       //$row = $this->db2->query("SELECT customer_phone_number as cell_phone FROM s2credit_ecoupons WHERE reference_number_encode ='$folio' ")->result();
       $row = $this->pstgr->query("SELECT cell_phone as cell_phone FROM voucher where voucher_id = '$folio'")->result();
+      print_r($row);
+      die();
       if($row)
       {
         $tel = $row[0]->cell_phone;$foundTel=true;
