@@ -72,7 +72,6 @@ class Dpvalecom_model extends CI_Model {
     //$row = $this->db2->query("SELECT cell_phone FROM voucher WHERE status = '1' and voucher_id = '$folio' ")->result();
 
     $foundTel = false;
-    echo var_dump($foundTel);
     /*BUSQUEDA EN LA TABLA DE CONFIGURACIONES[PORTAL EMPRESARIAL]*/
     $row = $this->db3->query("SELECT telefono as cell_phone FROM config_tel_vale WHERE vale ='$folio'")->result();
     if($row){
@@ -88,9 +87,6 @@ class Dpvalecom_model extends CI_Model {
         $tel = $row[0]->cell_phone;
         $foundTel=true;
       }
-      echo $tel;
-      echo var_dump($foundTel);
-      die();
 
     }
   if($foundTel){
@@ -99,6 +95,8 @@ class Dpvalecom_model extends CI_Model {
        if($tel == '' || strlen($tel) < 10 || $tel == 0){
           $data = ["status"=>false, "code" => "A06" ,"message"=>'Numero telefonico no encontrado'];
           $this->setTrackingWs($token, 'enviarSMS', $folio, $row, $data);
+          echo "Entro A06 1";
+          die();
           return $data;
        }
 
@@ -199,6 +197,8 @@ class Dpvalecom_model extends CI_Model {
         return $data;
       }else{
         $data = ["status"=>false, "code" => "A01" ,"message"=>'Numero telefonico no encontrado'];
+        echo "Entro A01 ";
+        die();
       }
      $this->setTrackingWs($token, 'enviarSMS', $folio, $row, $data);
      return $data;
