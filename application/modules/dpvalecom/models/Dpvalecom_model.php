@@ -95,8 +95,6 @@ class Dpvalecom_model extends CI_Model {
        if($tel == '' || strlen($tel) < 10 || $tel == 0){
           $data = ["status"=>false, "code" => "A06" ,"message"=>'Numero telefonico no encontrado'];
           $this->setTrackingWs($token, 'enviarSMS', $folio, $row, $data);
-          echo "Entro A06 1";
-          die();
           return $data;
        }
 
@@ -197,8 +195,6 @@ class Dpvalecom_model extends CI_Model {
         return $data;
       }else{
         $data = ["status"=>false, "code" => "A01" ,"message"=>'Numero telefonico no encontrado'];
-        echo "Entro A01 ";
-        die();
       }
      $this->setTrackingWs($token, 'enviarSMS', $folio, $row, $data);
      return $data;
