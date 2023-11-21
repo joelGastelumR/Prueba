@@ -83,11 +83,14 @@ class Dpvalecom_model extends CI_Model {
       //$row = $this->db2->query("SELECT customer_phone_number as cell_phone FROM s2credit_ecoupons WHERE reference_number_encode ='$folio' ")->result();
       $row = $this->pstgr->query("SELECT cell_phone as cell_phone FROM voucher where voucher_id = '$folio'")->result();
       print_r($row);
-      die();
+      // die();
       if($row)
       {
         $tel = $row[0]->cell_phone;$foundTel=true;
       }
+      echo $tel;
+      echo $foundTel;
+      die();
 
     }
   if($foundTel){
