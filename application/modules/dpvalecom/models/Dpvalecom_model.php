@@ -201,7 +201,9 @@ class Dpvalecom_model extends CI_Model {
   }
 
   public function reenviarSMS($idCustomer,$folio_vale){
-    $row = $this->db2->query("SELECT customer_phone_number as cell_phone FROM s2credit_ecoupons WHERE reference_number_encode = '$folio_vale' ")->result();
+    //$row = $this->db2->query("SELECT customer_phone_number as cell_phone FROM s2credit_ecoupons WHERE reference_number_encode = '$folio_vale' ")->result();
+    //20240110 IR: SE REQUIERE CAMBIAR LA BUSQUEDA DEL CEL DE s2dp A POSTGREES
+    $row = $this->pstgr->query("SELECT cell_phone as cell_phone FROM voucher where voucher_id = '$folio_vale'")->result();
     if($row){
        $tel = $row[0]->cell_phone;
        if(strlen($tel)>10){ $tel = substr($tel, -10); }
