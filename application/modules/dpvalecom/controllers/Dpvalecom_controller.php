@@ -331,11 +331,11 @@ class Dpvalecom_controller extends MY_Controller {
                    die(json_encode($response));
              }
              if($sms['code'] == "A01"){
-                   $response = ["status"=>'error',"message"=>"No se puedo enviar el SMS, <b>El Canjeante no tiene registrado teléfono celular para enviar el SMS.</b><br> Favor de comunicarlo a Contact Center.<br>"];
+                   $response = ["status"=>'error',"message"=>"[A01] No se puedo enviar el SMS, <b>El Canjeante no tiene registrado teléfono celular para enviar el SMS.</b><br> Favor de comunicarlo a Contact Center.<br>"];
                    die(json_encode($response));
              }
              if($sms['code'] == "A06"){
-                   $response = ["status"=>'error',"message"=>"No se puedo enviar el SMS, <b>El Canjeante no tiene registrado teléfono celular para enviar el SMS.</b><br> Favor de comunicarlo a Contact Center.<br>"];
+                   $response = ["status"=>'error',"message"=>"[A06] No se puedo enviar el SMS, <b>El número telefónico del canjeante no es valido.</b><br> Favor de comunicarlo a Contact Center.<br>"];
                    die(json_encode($response));
              }
 
