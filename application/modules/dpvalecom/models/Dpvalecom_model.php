@@ -73,22 +73,22 @@ class Dpvalecom_model extends CI_Model {
 
     $foundTel = false;
     /*BUSQUEDA EN LA TABLA DE CONFIGURACIONES[PORTAL EMPRESARIAL]*/
-    $row = $this->db3->query("SELECT telefono as cell_phone FROM config_tel_vale WHERE vale ='$folio'")->result();
-    if($row){
-      $tel = $row[0]->cell_phone;
-      $foundTel=true;
-    }else{
+    //IR:20240123 SE COMENTA CODIGO CONSULTA A config_tel_vale YA QUE CORRESPONDE A TABLAS DE PRUEBA
+    //$row = $this->db3->query("SELECT telefono as cell_phone FROM config_tel_vale WHERE vale ='$folio'")->result();
+    //if($row){
+      //$tel = $row[0]->cell_phone;
+      //$foundTel=true;
+    //}else{
       /*BUSQUEDA POR FOLIO DEL VALE EN S2CREDIT*/
-      //20230811 IR: SE REQUIERE CAMBIAR LA BUSQUEDA DEL CEL DE s2dp A POSTGREES
-      //$row = $this->db2->query("SELECT customer_phone_number as cell_phone FROM s2credit_ecoupons WHERE reference_number_encode ='$folio' ")->result();
-      $row = $this->pstgr->query("SELECT cell_phone as cell_phone FROM voucher where voucher_id = '$folio'")->result();
+      //20240123 IR: SE COMENTA CODIGO CONSULTA A POSTGRES YA QUE TIENE PROBLEMAS DE CONEXION Y SE DESCOMENTA CODIGO A S2
+      $row = $this->db2->query("SELECT customer_phone_number as cell_phone FROM s2credit_ecoupons WHERE reference_number_encode ='$folio' ")->result();
+      //$row = $this->pstgr->query("SELECT cell_phone as cell_phone FROM voucher where voucher_id = '$folio'")->result();
       if($row)
       {
         $tel = $row[0]->cell_phone;
         $foundTel=true;
       }
-
-    }
+    //}
   if($foundTel){
 
        if(strlen($tel)>10){ $tel = substr($tel, -10); }
@@ -201,9 +201,9 @@ class Dpvalecom_model extends CI_Model {
   }
 
   public function reenviarSMS($idCustomer,$folio_vale){
-    //$row = $this->db2->query("SELECT customer_phone_number as cell_phone FROM s2credit_ecoupons WHERE reference_number_encode = '$folio_vale' ")->result();
-    //20240110 IR: SE REQUIERE CAMBIAR LA BUSQUEDA DEL CEL DE s2dp A POSTGREES
-    $row = $this->pstgr->query("SELECT cell_phone as cell_phone FROM voucher where voucher_id = '$folio_vale'")->result();
+    //20240123 IR: SE COMENTA CODIGO CONSULTA A POSTGRES YA QUE TIENE PROBLEMAS DE CONEXION Y SE DESCOMENTA CODIGO A S2
+    $row = $this->db2->query("SELECT customer_phone_number as cell_phone FROM s2credit_ecoupons WHERE reference_number_encode = '$folio_vale' ")->result();
+    //$row = $this->pstgr->query("SELECT cell_phone as cell_phone FROM voucher where voucher_id = '$folio_vale'")->result();
     if($row){
        $tel = $row[0]->cell_phone;
        if(strlen($tel)>10){ $tel = substr($tel, -10); }
