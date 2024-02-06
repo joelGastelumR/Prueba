@@ -230,7 +230,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="label1">FOLIO</span>
                     </div>
-                    <input type="text" value="" class="form-control folio" id="dpvale_folio" aria-describedby="label1"  style="text-transform:uppercase;" placeholder="0000000000" maxlength="10" >
+                    <input type="text" value="<?php if($foliovale != '' && strlen($foliovale) == 10) {echo $foliovale;}?>" class="form-control folio" id="dpvale_folio" aria-describedby="label1"  style="text-transform:uppercase;" placeholder="0000000000" maxlength="10" >
                     <div class="input-group-append">
                       <button class="btn btn-outline-secondary" type="button" id="btn_search">Buscar</button>
                     </div>
@@ -564,6 +564,20 @@ $("#dpvale_folio").keypress(function( event ) {
   }
 });
 
+//20240202 IR:
+function BuscaFolioValeAlEntrar()
+{
+  if($('#dpvale_folio').val().trim() != "" || $('#dpvale_folio').val().trim().length == 10)
+  {
+    console.log("::::Folio Correcto: " + $('#dpvale_folio').val());
+    buscaFolio();
+  }else
+  {
+    console.log("::::Folio No Correcto ! !");
+  }
+}
+BuscaFolioValeAlEntrar();
+//
 
 $("#btn_search").on("click", function(){
   buscaFolio();

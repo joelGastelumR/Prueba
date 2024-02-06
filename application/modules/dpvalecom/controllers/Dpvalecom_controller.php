@@ -31,7 +31,7 @@ class Dpvalecom_controller extends MY_Controller {
     // $this->path_firmas = "/var/www/html/assets/polizas/firma/"; // RUTAS QAs
     // $this->path_pdf= "/var/www/html/assets/polizas/pdf/"; // RUTAS QAs
     // $this->plantilla_poliza = '/var/www/html/assets/templetes/dpvale_seguro_ecommerce.html'; // RUTAS QAs
-    $this->sms_expira = 30;
+    $this->sms_expira = 3600;
     $this->load->library('user_agent');
     //date_default_timezone_set('America/Mazatlan');
 
@@ -63,6 +63,14 @@ class Dpvalecom_controller extends MY_Controller {
           $token = base64_decode( $clean2 );
           $orden = base64_decode( $clean3 );
 
+          //IR: 
+          $foliovale = "";
+          if(count($arreglo) == 4) //PARAMETRO DE FOLIO
+          {
+            $clean4 = strtr( $arreglo[3], ' ', '+');
+            $foliovale = base64_decode( $clean4 );
+          }
+
           $monto = str_replace(",", "", $monto);
           /*validacion de monto*/
           if(!is_numeric($monto)) {
@@ -90,6 +98,9 @@ class Dpvalecom_controller extends MY_Controller {
             $data['validacion'] = $arreglo[0];
             $data['hash'] = $this->hash;
             $data['ordenid'] = ($orden == 0 || $orden == '')?'N/A':$orden;
+            //IR:
+            $data['foliovale'] = $foliovale;
+
             $this->setSession('amount', $monto);
             $this->setSession('idbranch', $row[0]->s2_tienda);
             $this->setSession('orderId', $orden);
