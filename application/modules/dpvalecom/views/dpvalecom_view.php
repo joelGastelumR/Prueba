@@ -564,16 +564,13 @@ $("#dpvale_folio").keypress(function( event ) {
   }
 });
 
-//20240202 IR:
+//20240202 IR: SE CREA METODO PARA EL CASO QUE SE PROPORCIONE VALE, LO BUSQUE AL ENTRAR
 function BuscaFolioValeAlEntrar()
 {
   if($('#dpvale_folio').val().trim() != "" || $('#dpvale_folio').val().trim().length == 10)
   {
-    console.log("::::Folio Correcto: " + $('#dpvale_folio').val());
+    //console.log("::::Folio Correcto: " + $('#dpvale_folio').val());
     buscaFolio();
-  }else
-  {
-    console.log("::::Folio No Correcto ! !");
   }
 }
 BuscaFolioValeAlEntrar();

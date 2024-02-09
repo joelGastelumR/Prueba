@@ -63,7 +63,7 @@ class Dpvalecom_controller extends MY_Controller {
           $token = base64_decode( $clean2 );
           $orden = base64_decode( $clean3 );
 
-          //IR: 
+          //20240202 IR: NUEVO PARAMETRO QUE RECIBE FOLIO VALE.
           $foliovale = "";
           if(count($arreglo) == 4) //PARAMETRO DE FOLIO
           {
@@ -98,7 +98,7 @@ class Dpvalecom_controller extends MY_Controller {
             $data['validacion'] = $arreglo[0];
             $data['hash'] = $this->hash;
             $data['ordenid'] = ($orden == 0 || $orden == '')?'N/A':$orden;
-            //IR:
+            //20240202 IR: SE ALIMENTA EL PARAMETRO DE FOLIO VALE
             $data['foliovale'] = $foliovale;
 
             $this->setSession('amount', $monto);
