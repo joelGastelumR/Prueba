@@ -70,6 +70,7 @@ class Dpvalecom_controller extends MY_Controller {
             $clean4 = strtr( $arreglo[3], ' ', '+');
             $foliovale = base64_decode( $clean4 );
           }
+          ////////////////////////////////////////////////////
 
           $monto = str_replace(",", "", $monto);
           /*validacion de monto*/
