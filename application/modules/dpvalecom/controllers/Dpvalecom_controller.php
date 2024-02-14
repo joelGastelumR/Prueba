@@ -642,13 +642,13 @@ class Dpvalecom_controller extends MY_Controller {
             //$datos = $this->Dpvalecom_model->setBeneficiario($params,$this->session->userdata('id_purchase_'.$this->hash));
 
             // !Descomentar las siguietes lineas comentadas
-            // $datos = $this->Dpvalecom_model->setBeneficiario($params,$this->getSession('id_purchase'),$this->hash, $this->getSession('idcoupon'));
+            $datos = $this->Dpvalecom_model->setBeneficiario($params,$this->getSession('id_purchase'),$this->hash, $this->getSession('idcoupon'));
 
-            // $res = $datos['response'];
-            // if($res == null){
-            //   $response = ["status"=>'error',"message"=>'Se tuvo problemas de comunicación, favor de intentarlo de nuevo <br><small>Codigo A19</small>'];
-            //   die(json_encode($response));
-            // }
+            $res = $datos['response'];
+            if($res == null){
+              $response = ["status"=>'error',"message"=>'Se tuvo problemas de comunicación, favor de intentarlo de nuevo <br><small>Codigo A19</small>'];
+              die(json_encode($response));
+            }
 
             // if(isset($res->ErrorMessage)){
             //   if(isset($res->ErrorMessage->status)){
